@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Natural Language Classifier</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+          integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" href="/mybootstrap.css">
+    <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+            integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+            crossorigin="anonymous"></script>
+    <script src="/classifier.js"></script>
+</head>
+
+<body>
+
+<header>
+    <div class="container-fluid text-center">
+        <div class="row">
+            <div class="col-xs-1">
+                <a href="maintenance.html"><h4><span class="glyphicon glyphicon-home" aria-hidden="true"></span></h4>
+                </a></div>
+            <div class="col-xs-10"><h4>Natural Language Classifier</h4></div>
+        </div>
+    </div>
+</header>
+
+<div class="container-fluid" style="margin: 15px 0 0 0">
+    <form id="uploadId">
+        <div class="input-group">
+            <span class="input-group-addon">Create classifier</span>
+            <input type="file" id="fileId" name="training-csv" class="form-control">
+            <span class="input-group-btn">
+                <button id="createBtnId" type="button" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-upload" aria-hidden="true"></span>
+                </button>
+            </span>
+        </div>
+    </form>
+
+    <form id="classifyFormId">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th></th>
+                <th>classifier_id</th>
+                <th>name</th>
+                <th>language</th>
+                <th>created</th>
+                <th>status</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <% for(var i = 0; i < list.length; i++){ %>
+            <tr>
+                <td>
+                    <input type="radio" id="<%= list[i].classifier_id %>RadioId" name="classifierRadio"
+                           value="<%= list[i].classifier_id %>">
+                </td>
+                <td><%= list[i].classifier_id %></td>
+                <td><%= list[i].name %></td>
+                <td><%= list[i].language %></td>
+                <td><%= list[i].created %></td>
+                <td id="<%= list[i].classifier_id %>StatusId">unknown</td>
+                <script>status('<%= list[i].classifier_id %>');</script>
+                <td>
+                    <a href="javascript:deleteClassifier('<%= list[i].classifier_id %>');">
+                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                    </a>
+                </td>
+            </tr>
+            <% } %>
+            </tbody>
+        </table>
+
+        <div class="input-group">
+            <span class="input-group-addon">Classify</span>
+            <input type="text" id="textId" class="form-control" placeholder="text">
+            <span class="input-group-btn">
+            <button type="submit" class="btn btn-primary" id="classifyBtnId">
+                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+            </button>
+        </span>
+        </div>
+    </form>
+    <div id="classifyId" style="margin:15px 0 0 0">
+        <hr>
+        <h4>Result</h4>
+        <ul class="nav nav-tabs nav-justified">
+            <li class="active"><a href="#jsonTabId" data-toggle="tab">JSON</a></li>
+            <li><a href="#tableTabId" data-toggle="tab">Table</a></li>
+        </ul>
+        </br>
+        <div id="tabId" class="tab-content">
+            <div class="tab-pane in active" id="jsonTabId">
+                <div id="resultJsonId"></div>
+            </div>
+            <div class="tab-pane" id="tableTabId">
+                <div id="resultTableId"></div>
+            </div>
+        </div>
+        <hr>
+    </div>
+
+</div>
+
+<!-- Delete Modal -->
+<div class="modal" id="deleteModalId" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span>×</span></button>
+                <h4 class="modal-title">Delete classifier</h4>
+            </div>
+            <div class="modal-body">
+                <p>「<span id="deleteId"></span>」を削除します。よろしいですか？</p>
+            </div>
+            <div class="modal-footer">
+                <button id="cancelBtnId" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button id="deleteBtnId" type="button" class="btn btn-danger">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Result Modal -->
+<div class="modal" id="resultModalId" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span>×</span></button>
+                <h4 class="modal-title">Result</h4>
+            </div>
+            <div class="modal-body">
+                <div id="resultModalMessageId">Runnig</div>
+            </div>
+            <div class="modal-footer">
+                <button id="okBtnId" type="button" class="btn btn-default" data-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

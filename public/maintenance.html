@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Maintenance</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+          integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" href="/mybootstrap.css">
+    <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+            integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+            crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function () {
+            var downloadId = $('#downloadId');
+
+            var filename = {
+                "/answer": "answer.json",
+                "/answer/csv": "diet-classifier.csv",
+            }
+
+            downloadId.on('click', function () {
+                var url = $('#commandId').val();
+                downloadId.prop('href', url);
+                downloadId.prop('download', filename[url]);
+            });
+
+            $('#listId').on('click', function () {
+                var url = $('#commandId').val();
+                $.ajax({
+                    url: url,
+                    success: function (data) {
+                        $('#resultId').html('<pre>' + data + '</pre>');
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+
+<body>
+
+<header>
+    <div class="container-fluid text-center">
+        <h4>Maintenance</h4>
+    </div>
+</header>
+
+<div class="container">
+    <br>
+    <div class="list-group">
+        <a class="list-group-item" href="/classifier">
+            <span class="glyphicon glyphicon-link" aria-hidden="true"></span>　Classifier</a>
+    </div>
+
+    <div class="input-group">
+        <span class="input-group-addon">Database</span>
+        <select class="form-control" id="commandId" style="border-radius: 0!important; -webkit-appearance:none;">
+            <option value="/answer">All contents</option>
+            <option value="/answer/csv">Export training-csv</option>
+        </select>
+        <span class="input-group-btn">
+        <a id="listId" class="btn btn-primary" role="button">
+            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+        </a>
+        <a id="downloadId" class="btn btn-primary" role="button">
+            <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
+        </a>
+    </span>
+    </div>
+    <div id="resultId" style="margin: 5px 0 0 0"></div>
+
+</div>
+</body>
+</html>

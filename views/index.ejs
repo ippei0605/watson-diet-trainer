@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+    <title>Watson Diet Trainer</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+          integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" href="/mybootstrap.css">
+    <link rel="stylesheet" href="/chatbot.css">
+
+    <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+            integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+            crossorigin="anonymous"></script>
+    <script src="/index.js"></script>
+</head>
+
+<body>
+
+<header>
+    <div class="container-fluid text-center">
+        <h4>Watson Diet Trainer</h4>
+    </div>
+</header>
+
+<div class="container-fluid">
+    <div class="bs-component">
+        <div id="conversation_field"></div>
+    </div>
+</div>
+
+<footer class="container-fluid">
+    <div id="anime" class="text-center"></div>
+    <form id="searchFormId" action="#">
+        <div class="input-group">
+            <input type="text" class="form-control" id="qId" placeholder="メッセージを入力">
+            <span class="input-group-btn">
+                    <button type="button" id="recordId" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-record" aria-hidden="true"></span>
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                    </button>
+                </span>
+        </div>
+    </form>
+</footer>
+
+</body>
+</html>

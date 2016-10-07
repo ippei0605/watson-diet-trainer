@@ -1,0 +1,10 @@
+function (doc) {
+    var row = {
+        "_id": doc._id,
+        "_rev": doc._rev,
+        "message": doc.message,
+        "questions": doc.questions
+    };
+
+    emit(doc._id, row);
+}
