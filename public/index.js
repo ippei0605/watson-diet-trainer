@@ -43,18 +43,6 @@ if (recognition) {
     }, false);
 }
 
-// Watson のアニメーションタグ
-var animeTag = {
-    on: '<img src = "watson_black_animate.gif">',
-    off: ''
-};
-
-// Watson のアニメーションを表示 / 非表示する。
-function anime(key) {
-    $('#anime').html(animeTag[key]);
-    window.scrollTo(0, document.body.scrollHeight);
-}
-
 // テンプレートタグにパラメータを付与する。
 function formatTag(tag, s) {
     var array = tag.split('<%= s %>');
@@ -89,12 +77,6 @@ function formatConfidence(confidence) {
     return '[' + parseInt(Math.abs(confidence) * 100) + '%]';
 }
 
-// 現在時刻を返す。
-function getNow() {
-    var now = new Date();
-    return now.getFullYear() + '年' + (now.getMonth() + 1) + '月' + now.getDate() + '日 ' + now.getHours() + '時' + now.getMinutes() + '分' + now.getSeconds() + '秒';
-}
-
 // 定型メッセージ定義
 var message = {
     "error_ajax": "通信エラーです。申し訳ございませんが最初からやり直してください。"
@@ -121,7 +103,7 @@ function viewQuestion(q) {
 // 質問する。
 function ask(url, text) {
     answerNumber++;
-    anime('on');
+    loadingView(true);
 
     $.ajax({
         type: "GET",
@@ -135,7 +117,7 @@ function ask(url, text) {
     }).fail(function (value) {
         fixMessage('error_ajax');
     }).always(function (value) {
-        anime('off');
+        loadingView(false);
     });
 }
 
