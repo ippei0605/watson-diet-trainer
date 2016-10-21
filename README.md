@@ -12,7 +12,7 @@
     - Natural Language Classifier 操作用GUI
 
 ## 使い方  
-* Q&Aシステムは次のURLにアクセスしてください。
+* Chatbot は次のURLにアクセスしてください。
   - https://watson-diet-trainer.au-syd.mybluemix.net/
 * 管理機能は次のURLにアクセスしてください。
   - https://watson-diet-trainer.au-syd.mybluemix.net/maintenance.html
@@ -129,3 +129,6 @@
 |/classifier/:id/|GET|Classifier のステータスを返す。|
 |/classifier/:id/delete|GET|Classifier を削除して結果を返す。|
 |/classifier/:id/classify|GET|クラス分類して結果を返す。|
+
+## まとめ
+検討中。。。
