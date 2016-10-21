@@ -6,6 +6,10 @@
 * Dialog の廃止に伴い、当該機能を削除
 * Text to Speech によるテキストの読上げ機能を追加
 * Google Speech API による音声認識機能を追加
+* 管理機能を追加
+    - コンテンツ参照
+    - トレーニングデータ抽出
+    - Natural Language Classifier 操作用GUI)
 
 ## 使い方  
 * Q&Aシステムは次のURLにアクセスしてください。
@@ -21,7 +25,7 @@
 
     > 以降、watson-diet-trainer-ippei0605 で説明します。
 
-1. CF および Bluemix コマンド・ライン・インターフェースをインストールしていない場合は、インストールしてください。
+1. CF および Bluemix コマンド・ライン・インターフェースをインストールしていない場合は、インストールしてください。 (Mac OS Sierra は CF v6.22.0以上にしないとコマンドの実行途中でフリーズします。)
 
 1. Cloudant NoSQL DB を作成し、watson-diet-trainer-ippei0605 にバインドしてください。  
 サービス名: 任意  
