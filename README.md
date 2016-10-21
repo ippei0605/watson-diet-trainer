@@ -9,7 +9,7 @@
 * 管理機能を追加
     - コンテンツ参照
     - トレーニングデータ抽出
-    - Natural Language Classifier 操作用GUI)
+    - Natural Language Classifier 操作用GUI
 
 ## 使い方  
 * Q&Aシステムは次のURLにアクセスしてください。
@@ -59,7 +59,7 @@
 
     * Database メニューで export training-csv を選択、ダウンロードボタンをクリックしてください。
     * Classifier メニューをクリックしてください。
-    * Create classifier でファイルをアップロード、確認ダイアログでOKをクリックしてください。Classifier が Training 状態でリストに追加されます。Available になるまで15分程度かかります。 
+    * Create classifier でファイルをアップロード、確認ダイアログで OK をクリックしてください。Classifier が Training 状態でリストに追加されます。Available になるまで15分程度かかります。 
 
 1. Bluemix コンソールから CF アプリの環境変数 (ユーザー定義) を設定します。次の変数を設定してください。
     * CLASSIFIER_ID : 前の手順でトレーニングした classifier_id の値をセット
@@ -110,7 +110,7 @@
 
 |データ項目      |必須|説明        |
 |--------------|---|-----------|
-|_id           |◯ |Document ID: NLC のクラス名とをセット|
+|_id           |◯ |Document ID: NLC のクラス名|
 |_rev          |◯ |Document revision: ユニーク文字列がセットされる。更新、削除時は _id、_rev 指定が必要|
 |message       |◯ |メッセージ|
 |questions     |   |NLC のテキスト (配列)|
