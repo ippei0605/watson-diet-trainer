@@ -4,8 +4,8 @@
 「さわってみようWatson on Bluemix」(IBM) の Node-RED のアプリをベースに、次の変更をしました。
 * Node-RED から Node.js に移植
 * Dialog の廃止に伴い、当該機能を削除
-* Text to Speech によるテキストの読上げ機能を追加
-* Google Speech API による音声認識機能を追加
+* Text to Speech によるテキストの読上げ機能を追加 (PC の Chrome、Firefox に対応)  
+* Google Speech API による音声認識機能を追加 (PC の Chrome に対応)  
 * 管理機能を追加
     - コンテンツ参照
     - トレーニングデータ抽出
