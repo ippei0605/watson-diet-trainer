@@ -131,5 +131,5 @@
 |/classifier/:id/classify|GET|クラス分類して結果を返す。|
 
 ## まとめ
-* 現時点では、Dialog による回答の絞込み機能を削除したため、Natural Language Classifier の分類による一発回答の Chatbot です。  
+* 現時点では、Dialog による段階的な会話 (選択肢) による最適解を探す機能を削除したため、Natural Language Classifier の分類による一発回答の Chatbot です。  
 * 今後、Conversation の組込みを検討します。
