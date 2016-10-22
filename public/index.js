@@ -18,31 +18,6 @@ function textToSpeech(text) {
     audio.play();
 }
 
-// 初期設定: 音声認識
-var recognition = null;
-try {
-    recognition = new webkitSpeechRecognition();
-    recognition.lang = 'ja';
-} catch (e) {
-    $('#recordId').hide();
-    console.log('error:', e);
-}
-
-// 音声認識中フラグ
-var recording = false;
-
-// 録音終了時トリガー
-if (recognition) {
-    recognition.addEventListener('result', function (event) {
-        var text = event.results.item(0).item(0).transcript;
-        var qId = $('#qId');
-        qId.val(text);
-        qId.focus();
-        $('#recordId').html('<span class="glyphicon glyphicon-record" aria-hidden="true"></span>');
-        recording = false;
-    }, false);
-}
-
 // テンプレートタグにパラメータを付与する。
 function formatTag(tag, s) {
     var array = tag.split('<%= s %>');
@@ -128,6 +103,28 @@ var recordIconTag = {
 };
 
 $(document).ready(function () {
+    // 初期設定: 音声認識
+    var recognition = null;
+    try {
+        recognition = new webkitSpeechRecognition();
+        recognition.lang = 'ja';
+        // 録音終了時トリガーを設定する。
+        recognition.addEventListener('result', function (event) {
+            var text = event.results.item(0).item(0).transcript;
+            var qId = $('#qId');
+            qId.val(text);
+            qId.focus();
+            $('#recordId').html('<span class="glyphicon glyphicon-record" aria-hidden="true"></span>');
+            recording = false;
+        }, false);
+    } catch (e) {
+        $('#recordId').hide();
+        console.log('error:', e);
+    }
+
+    // 音声認識中フラグ
+    var recording = false;
+
     // 初回挨拶
     if (answerNumber == 0) {
         ask('ask-classname', 'general_hello');

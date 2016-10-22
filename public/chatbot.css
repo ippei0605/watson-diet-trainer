@@ -15,6 +15,7 @@ footer {
     position: fixed !important;
     position: absolute;
     bottom: 15px;
+    width: 100%;
     z-index: 1;
 }
 
@@ -46,7 +47,7 @@ p.balloon-right {
     border-width: 3px;
     border-style: solid;
     border-radius: 10px;
-/ / overflow: auto;
+    overflow: auto;
 }
 
 p.balloon-left::before,
