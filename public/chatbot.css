@@ -47,7 +47,6 @@ p.balloon-right {
     border-width: 3px;
     border-style: solid;
     border-radius: 10px;
-    overflow: auto;
 }
 
 p.balloon-left::before,
