@@ -100,6 +100,7 @@ var finalAnswer = function (value, now) {
     return value;
 };
 
+// 回答を取得する。
 var getAnswer = function (class_name, confidence, now, callback) {
     db.get(class_name, function (err, body) {
         if (err) {
@@ -112,7 +113,7 @@ var getAnswer = function (class_name, confidence, now, callback) {
             }, now));
         }
     });
-}
+};
 
 /** クラス名によりメッセージを取得する */
 exports.askClassName = function (text, now, callback) {

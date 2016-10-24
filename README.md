@@ -2,11 +2,12 @@
 
 ## はじめに  
 「さわってみようWatson on Bluemix」(IBM) の Node-RED のアプリをベースに、次の変更をしました。
-* Node-RED から Node.js に移植
-* Dialog の廃止に伴い、当該機能を削除
-* Text to Speech によるテキストの読上げ機能を追加 (PC の Chrome、Firefox に対応)  
-* Google Speech API による音声認識機能を追加 (PC の Chrome に対応)  
-* 管理機能を追加
+* Node-RED から Node.js に移植しました。
+* Dialog の廃止に伴い、当該機能を削除しました。
+* 質問 (テキスト) 以外にローカルの日時をサーバに送信、general-hello クラスの「おはよう」(5〜11時)、「こんにちは」(11〜17時)、「こんばんは」(17時〜24時)、「お疲れ様です」(0〜5時) の出し分けを追加しました。
+* Text to Speech によるテキストの読上げ機能を追加しました。(PC の Chrome、Firefox に対応)  
+* Google Speech API による音声認識機能を追加しました。(PC の Chrome に対応)  
+* 管理機能を追加しました。
     - コンテンツ参照
     - トレーニングデータ抽出
     - Natural Language Classifier 操作用GUI
@@ -131,5 +132,6 @@
 |/classifier/:id/classify|GET|クラス分類して結果を返す。|
 
 ## まとめ
-* 現時点では、Dialog による段階的な会話 (選択肢) による最適解を探す機能を削除したため、Natural Language Classifier の分類による一発回答の Chatbot です。  
+* 現時点では、Dialog による段階的な会話 (選択肢) による最適解を探す機能を削除したため、Natural Language Classifier の分類による一発回答の Chatbot です。
+* 時刻以外に位置情報などを送信することで、「ここはどこ？」「近くのおすすめランチを教えて？」などの質問にも回答できるようになると思います。(位置情報を送信するのであれば、現在時刻はタイムゾーンとサーバ GMT を使用する方がクライアント負荷が軽減できて良いかもしれません。)
 * 今後、Conversation の組込みを検討します。
