@@ -38,7 +38,7 @@
 1. Text to Speech を作成し、watson-diet-trainer-ippei0605 にバインドしてください。  
 サービス名: 任意 
 
-1. 解凍したディレクトリ (line-bot アプリのホーム) に移動してください。
+1. 解凍したディレクトリ (watson-diet-trainer アプリのホーム) に移動してください。
 
         > cd watson-diet-trainer
 
