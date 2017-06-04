@@ -2,8 +2,12 @@
 node_modules/
 
 # JSDocの出力先
+
 # 設定ファイル
 .idea/
+.settings/
+.project
+
 # その他
 .setenv
 .command-memo
