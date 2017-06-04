@@ -14,7 +14,7 @@ header {
 footer {
     position: fixed !important;
     position: absolute;
-    bottom: 15px;
+    bottom: 30px;
     width: 100%;
     z-index: 1;
 }
@@ -41,7 +41,7 @@ p.balloon-right {
     z-index: 1;
     max-width: 80%;
     min-width: 10%;
-    margin: 15px auto;
+    margin: 10px auto;
     padding: 13px;
     background-color: #fff;
     border-width: 3px;
@@ -79,7 +79,7 @@ p.balloon-left {
     float: left;
     border-color: #EEEEEE;
     background-color: #EEEEEE;
-    left: 80px;
+    left: 5px;
 }
 
 p.balloon-left::before {
@@ -99,6 +99,7 @@ p.balloon-right {
     border-color: #337ab7;
     background-color: #337ab7;
     color: #ffffff;
+    right: 5px;
 }
 
 p.balloon-right::before {

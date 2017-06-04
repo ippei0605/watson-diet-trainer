@@ -1,21 +1,22 @@
 {
-	"name": "watson-diet-trainer",
-	"version": "1.0.0",
-	"description": "Watson Diet Trainer",
-	"private": true,
-	"scripts": {
-		"start": "node app.js",
-		"postinstall": "node ./install/postinstall.js"
-	},
-	"dependencies": {
-		"body-parser": "~1.15.0",
-		"cfenv": "~1.0.3",
-		"cloudant": "~1.4.1",
-		"ejs": "~2.4.1",
-		"express": "~4.13.4",
-		"morgan": "~1.7.0",
-		"serve-favicon": "~2.3.0",
-		"multer": "~1.2.0",
-		"watson-developer-cloud": "~2.0.1"
-	}
+  "name": "watson-diet-trainer",
+  "version": "2.0.0",
+  "description": "Watson Diet Trainer",
+  "private": true,
+  "scripts": {
+    "start": "node app.js",
+    "postinstall": "node ./install/postinstall.js"
+  },
+  "dependencies": {
+    "body-parser": "~1.17.1",
+    "cfenv": "~1.0.4",
+    "cloudant": "~1.4.3",
+    "ejs": "~2.4.2",
+    "express": "~4.15.2",
+    "morgan": "~1.8.1",
+    "multer": "~1.2.1",
+    "serve-favicon": "~2.4.1",
+    "vcap_services": "~0.2.0",
+    "watson-developer-cloud": "~2.26.0"
+  }
 }

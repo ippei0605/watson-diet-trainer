@@ -7,15 +7,12 @@
 // 初期設定: 会話制御
 var answerNumber = 0;
 
-// 初期設定: 音声出力
-var audio = new Audio('');
-
 // 音声を出力する。
 function textToSpeech(text) {
-    audio.pause();
-    console.log('textToSpeech: ', text);
-    audio.src = '/text-to-speech/?text=' + text;
-    audio.play();
+    speechSynthesis.cancel();
+    let msg = new SpeechSynthesisUtterance(text);
+    msg.lang = 'ja-JP';
+    speechSynthesis.speak(msg);
 }
 
 // テンプレートタグにパラメータを付与する。
@@ -98,8 +95,8 @@ function ask(url, text) {
 
 // 録音ボタンタグ
 var recordIconTag = {
-    on: '<span class="glyphicon glyphicon-record" aria-hidden="true"></span>',
-    off: '<span class="glyphicon glyphicon-stop" aria-hidden="true"></span>'
+    true: '<span class="glyphicon glyphicon-record" aria-hidden="true"></span>',
+    false: '<span class="glyphicon glyphicon-stop" aria-hidden="true"></span>'
 };
 
 $(document).ready(function () {
@@ -126,20 +123,23 @@ $(document).ready(function () {
     var recording = false;
 
     // 初回挨拶
-    if (answerNumber == 0) {
-        ask('ask-classname', 'general_hello');
-    }
+    $('#startBtnId').on('click', function () {
+        if (answerNumber === 0) {
+            textToSpeech('。');
+            ask('ask-classname', 'general_hello');
+            $('#startBtnId').remove();
+        }
+    });
 
     // 録音開始
     $('#recordId').on('click', function () {
         if (recording) {
-            $('#recordId').html(recordIconTag['on']);
             recognition.stop();
         } else {
-            recording = true;
-            $('#recordId').html(recordIconTag['off']);
             recognition.start();
         }
+        recordId.html(recordIconTag[recording]);
+        recording = !recording;
     });
 
     // Watson へ問い合わせる。

@@ -1,5 +1,10 @@
 # Watson Diet Trainer
 
+## 更新履歴
+### version 2.0.0
+* テキスト読み上げの対応ブラウザを増やすため、Watson Text To Speech から Speech Synthesis API に変更しました。
+* クライアント HTML および JavaScript は ES6 未対応 (PC Chrome、Firefox、Safari、iOS Chrome、Firefox、Safari で同じ動作にならなかったため。)
+
 ## はじめに  
 「さわってみようWatson on Bluemix」(IBM) の Node-RED のアプリをベースに、次の変更をしました。
 * Node-RED から Node.js に移植しました。
@@ -122,7 +127,6 @@
 |/|GET|Chatbot 画面を表示する。|
 |/ask|GET|Natural Language Classifier で質問をクラス分類して、回答を返す。|
 |/ask-classname|GET|クラス名指定により回答を返す。(定型文に使用)|
-|/text-to-speech|GET|音声データを返す。|
 |/answer|GET|answer の全コンテンツを返す。|
 |/answer/csv|GET|answer の全コンテンツを対象とした Natural Language Classifier　のトレーニングデータを返す。|
 |/classifier|GET|登録済みの Classifier の一覧を返す。|

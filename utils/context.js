@@ -5,37 +5,31 @@
  * @author Ippei SUZUKI
  */
 
-/** データベース名 */
+'use strict';
+
+// モジュールを読込む。
+const Cfenv = require('cfenv');
+const VcapServices = require('vcap_services');
+const Cloudant = require('cloudant');
+const Watson = require('watson-developer-cloud');
+
+// データベース名
 exports.DB_NAME = 'answer';
 
 /** 環境変数 */
-exports.appEnv = require('cfenv').getAppEnv();
+exports.appEnv = Cfenv.getAppEnv();
 
-// VCAP_SERVICES
-var vcapServices = JSON.parse(process.env.VCAP_SERVICES);
+// Cloudant NoSQL DB の接続情報を取得する。
+const cloudantCreds = VcapServices.getCredentials('cloudantNoSQLDB');
 
-/** データベース接続 */
-var cloudantCreds = vcapServices.cloudantNoSQLDB[0].credentials;
-exports.cloudant = require('cloudant')(cloudantCreds.url);
+/** Cloudant NoSQL DB に接続する。 */
+exports.cloudant  = Cloudant(cloudantCreds.url);
 
-/** Watson Text-To-Speech */
-var textToSpeechCreds = vcapServices.text_to_speech[0].credentials;
-var TextToSpeechV1 = require('watson-developer-cloud/text-to-speech/v1');
-var textToSpeech = new TextToSpeechV1({
-    username: textToSpeechCreds.username,
-    password: textToSpeechCreds.password
-});
-exports.textToSpeech = textToSpeech;
+// Watson Natural Language Classifier の接続情報を取得する。
+const nlsCreds = VcapServices.getCredentials('natural_language_classifier');
 
 /** Watson Natural Language Classifier */
-var naturalLanguageClassifierCreds = vcapServices.natural_language_classifier[0].credentials;
-var NaturalLanguageClassifier = require('watson-developer-cloud/natural_language_classifier/v1');
-var naturalLanguageClassifier = new NaturalLanguageClassifier({
-    username: naturalLanguageClassifierCreds.username,
-    password: naturalLanguageClassifierCreds.password,
-    version: 'v1'
-});
-exports.naturalLanguageClassifier = naturalLanguageClassifier;
+exports.nlc = new Watson.NaturalLanguageClassifierV1(nlsCreds);
 
 /** Watson Natural Language Classifier ID (ユーザー定義の環境変数から取得) */
 exports.CLASSIFIER_ID = process.env.CLASSIFIER_ID;

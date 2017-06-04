@@ -5,20 +5,21 @@
  * @author Ippei SUZUKI
  */
 
+'use strict';
+
 // モジュールを読込む。
-var watson = require('../models/watson');
+const watson = require('../models/watson');
 
 /** コンテンツを表示する。(テスト用) */
-exports.list = function (req, res) {
-    watson.listContent(function (value) {
-        var data = {"docs": value};
-        res.send(JSON.stringify(data, undefined, 2));
+exports.list = (req, res) => {
+    watson.listContent((value) => {
+        res.send(JSON.stringify({"docs": value}, undefined, 2));
     });
 };
 
 /** トレーニングデータを表示する。(テスト用) */
-exports.exportCsv = function (req, res) {
-    watson.listContent(function (value) {
+exports.exportCsv = (req, res) => {
+    watson.listContent((value) => {
         res.send(watson.exportCsv(value));
     });
 };

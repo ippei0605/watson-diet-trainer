@@ -6,8 +6,8 @@
 
 // Classifier のステータスを更新する。
 function status(id) {
-    $.getJSON('/classifier/' + id, function (value) {
-        var status = value.status;
+    $.getJSON('/classifier/' + id, (value) => {
+        const status = value.status;
         $('#' + id + 'StatusId').text(status);
         if (status === 'Available') {
             $('#' + id + 'RadioId').prop('checked', true);
@@ -21,16 +21,17 @@ function deleteClassifier(id) {
     $('#deleteId').text(id);
 }
 
-$(document).ready(function () {
-    $('#uploadId').on('submit', function () {
+// DOM 読込み完了時に実行
+$(() => {
+    $('#uploadId').on('submit', () => {
         if ($('#fileId').val() === '') {
             return false;
         }
     });
 
-    $('#classifyFormId').on('submit', function () {
-        var text = $('#textId').val();
-        var radio = $('input[name=classifierRadio]:checked').val();
+    $('#classifyFormId').on('submit', () => {
+        let text = $('#textId').val();
+        let radio = $('input[name=classifierRadio]:checked').val();
         if (text === '') {
             return false;
         }
@@ -40,12 +41,12 @@ $(document).ready(function () {
             type: "GET",
             url: '/classifier/' + radio + '/classify',
             data: {"text": text}
-        }).done(function (value) {
-            var tableTag = '<table class="table"><thead><tr><th>Class Name</th><th>Message</th><th>Confidence</th></thead><tbody>';
-            value.classes.forEach(function (row) {
+        }).done((value) => {
+            let tableTag = '<table class="table"><thead><tr><th>Class Name</th><th>Message</th><th>Confidence</th></thead><tbody>';
+            value.classes.forEach((row) => {
                 tableTag += '<tr><td>' + row.class_name + '</td><td id="' + row.class_name + 'Id">unknown</td><td class="text-right">' + parseFloat(row.confidence).toFixed(3) + '</td></tr>';
 
-                $.getJSON('/ask-classname/?text=' + row.class_name + '&now=' + getNow(), function (value) {
+                $.getJSON('/ask-classname/?text=' + row.class_name + '&now=' + getNow(), (value) => {
                     $('#' + row.class_name + 'Id').text(value.message);
                 });
             });
@@ -53,18 +54,18 @@ $(document).ready(function () {
             $('#resultTableId').html(tableTag);
             $('#resultJsonId').html('<pre>' + JSON.stringify(value, undefined, 2) + '</pre>');
             $('#textId').val('');
-        }).fail(function (value) {
+        }).fail((value) => {
             console.log('通信エラーが発生しました。');
-        }).always(function (value) {
+        }).always((value) => {
             loadingView(false);
         });
         return false;
     });
 
     // Create Classifier
-    $('#createBtnId').on('click', function () {
-        var formdata = new FormData($('#uploadId').get(0));
-        var okBtn = $('#okBtnId');
+    $('#createBtnId').on('click', () => {
+        let formdata = new FormData($('#uploadId').get(0));
+        let okBtn = $('#okBtnId');
         okBtn.prop('disabled', true);
         $('#resultModalId').modal();
         loadingView(true);
@@ -76,12 +77,12 @@ $(document).ready(function () {
             contentType: false,
             processData: false,
             dataType: "text"
-        }).done(function (value) {
-            var json = JSON.parse(value);
+        }).done((value) => {
+            let json = JSON.parse(value);
             $('#resultModalMessageId').html('<pre>' + JSON.stringify(json, undefined, 2) + '</pre>');
-        }).fail(function (value) {
+        }).fail((value) => {
             $('#resultModalMessageId').html('通信エラーが発生しました。');
-        }).always(function (value) {
+        }).always((value) => {
             loadingView(false);
             okBtn.prop('disabled', false);
         });
@@ -89,8 +90,8 @@ $(document).ready(function () {
     });
 
     // Delete Classifier
-    $('#deleteBtnId').on('click', function () {
-        var okBtn = $('#okBtnId');
+    $('#deleteBtnId').on('click', () => {
+        let okBtn = $('#okBtnId');
         okBtn.prop('disabled', true);
         $('#resultModalId').modal();
         $('#deleteModalId').modal('hide');
@@ -99,18 +100,18 @@ $(document).ready(function () {
             type: "GET",
             url: '/classifier/' + $('#deleteId').text() + '/delete',
             data: {}
-        }).done(function (value) {
+        }).done((value) => {
             $('#resultModalMessageId').html('<pre>' + JSON.stringify(value, undefined, 2) + '</pre>');
-        }).fail(function (value) {
+        }).fail((value) => {
             $('#resultModalMessageId').html('通信エラーが発生しました。');
-        }).always(function (value) {
+        }).always((value) => {
             loadingView(false);
             okBtn.prop('disabled', false);
         });
     });
 
     // Result Modal の OKボタンをクリックしたらページを再読み込みする。
-    $('#okBtnId').on('click', function () {
+    $('#okBtnId').on('click', () => {
         location.href = '/classifier';
     });
 });

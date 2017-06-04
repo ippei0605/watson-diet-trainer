@@ -3,18 +3,20 @@
  * @author Ippei SUZUKI
  */
 
+'use strict';
+
 // モジュールを読込む。
-var context = require('./utils/context');
-var express = require('express');
-var logger = require('morgan');
-var bodyParser = require('body-parser');
-var favicon = require('serve-favicon');
-var multer = require('multer');
-var routes = require('./routes');
-var upload = multer({dest: 'upload/'});
+const context = require('./utils/context');
+const express = require('express');
+const logger = require('morgan');
+const bodyParser = require('body-parser');
+const favicon = require('serve-favicon');
+const multer = require('multer');
+const routes = require('./routes');
+const upload = multer({dest: 'upload/'});
 
 // アプリケーションを作成する。
-var app = express();
+const app = express();
 
 // ミドルウェアを設定する。
 app.set('views', context.path.join(__dirname, 'views'));
@@ -28,7 +30,6 @@ app.use(favicon(__dirname + '/public/favicon.ico'));
 app.get('/', routes.index);
 app.get('/ask', routes.ask);
 app.get('/ask-classname', routes.askClassName);
-app.get('/text-to-speech', routes.speech);
 app.get('/answer', routes.answerstore.list);
 app.get('/answer/csv', routes.answerstore.exportCsv);
 app.get('/classifier', routes.classifier.list);
@@ -39,5 +40,5 @@ app.get('/classifier/:id/classify', routes.classifier.classify);
 
 // リクエトを受付ける。
 app.listen(context.appEnv.port, function () {
-  console.log('server starting on ' + context.appEnv.url);
+    console.log('server starting on ' + context.appEnv.url);
 });

@@ -2,26 +2,28 @@
  * @file Watson Diet Trainer: インストール後処理
  *
  * <pre>
- * ・データベース「answer」が無い場合、
- *   - データベースを作成する。
- *   - 設計文書を登録する。
- *   - データを登録する。
+ * データベース「answer」が無い場合、次の処理を実行する。
+ *   1. データベースを作成する。
+ *   2. 設計文書を登録する。
+ *   3. データを登録する。
  * </pre>
  *
  * @author Ippei SUZUKI
  */
 
+'use strict';
+
 // モジュールを読込む。
-var context = require('../utils/context');
+const context = require('../utils/context');
 
 // データ
-var DATA_FILENAME = 'answer.json';
+const DATA_FILENAME = 'answer.json';
 
 // 設計文書 Map Function: list
-var MAP_LIST_FILENAME = 'list.function';
+const MAP_LIST_FILENAME = 'list.function';
 
 // 設計文書 (Functionは空で定義)
-var DESIGN_DOCUMENT = {
+const DESIGN_DOCUMENT = {
     "_id": "_design/answers",
     "views": {
         "list": {
@@ -31,14 +33,14 @@ var DESIGN_DOCUMENT = {
 };
 
 // ファイルを読込む。
-var readFunction = function (fileName) {
+const readFile = (fileName) => {
     return context.fs.readFileSync(__dirname + '/' + fileName).toString();
 };
 
 // 設計文書を登録する。
-var insertDesignDocument = function (db, doc) {
-    doc.views.list.map = readFunction(MAP_LIST_FILENAME);
-    db.insert(doc, function (err) {
+const insertDesignDocument = (db, doc) => {
+    doc.views.list.map = readFile(MAP_LIST_FILENAME);
+    db.insert(doc, (err) => {
         if (!err) {
             console.log('設計文書[%s]を登録しました。', doc._id);
             console.log(JSON.stringify(doc, undefined, 2));
@@ -49,9 +51,9 @@ var insertDesignDocument = function (db, doc) {
 };
 
 // データを登録する。
-var insertDocument = function (db) {
-    var data = JSON.parse(readFunction(DATA_FILENAME));
-    db.bulk(data, function (err) {
+const insertDocument = (db) => {
+    let data = JSON.parse(readFile(DATA_FILENAME));
+    db.bulk(data, (err) => {
         if (!err) {
             console.log('文書を登録しました。');
             console.log(JSON.stringify(data, undefined, 2));
@@ -62,15 +64,15 @@ var insertDocument = function (db) {
 };
 
 // データベースを作成する。
-var createDatabese = function (database, doc) {
+const createDatabase = (database, doc) => {
     // データベースの存在をチェックする。
-    context.cloudant.db.get(database, function (err, body) {
+    context.cloudant.db.get(database, (err, body) => {
         if (err && err.error === 'not_found') {
             console.log('アプリに必要なデータベースがありません。');
-            context.cloudant.db.create(database, function (err) {
+            context.cloudant.db.create(database, (err) => {
                 if (!err) {
                     console.log('データベース[%s]を作成しました。', database);
-                    var db = context.cloudant.db.use(database);
+                    const db = context.cloudant.db.use(database);
                     insertDesignDocument(db, doc);
                     insertDocument(db);
                 } else {
@@ -81,4 +83,4 @@ var createDatabese = function (database, doc) {
     });
 };
 
-createDatabese(context.DB_NAME, DESIGN_DOCUMENT);
+createDatabase(context.DB_NAME, DESIGN_DOCUMENT);
