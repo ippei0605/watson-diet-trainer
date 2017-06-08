@@ -11,17 +11,25 @@
 const context = require('../utils/context');
 const watson = require('../models/watson');
 
-/** Classifier を表示する。 */
-exports.list = (req, res) => {
-    watson.listClassifier((body) => {
-        res.render('classifier', {list: body.classifiers});
-    });
+// Classifier の一覧 (src) にステータスを付加して配列 (dst) を作成して、コールバックする。
+const listStatus = (src, dst, callback) => {
+    const num = dst.length;
+    if (num === src.length) {
+        callback(dst);
+    } else {
+        watson.statusClassifier(src[num].classifier_id, (value) => {
+            dst.push(value);
+            listStatus(src, dst, callback);
+        });
+    }
 };
 
-/** Classifier のステータスを返す。 */
-exports.status = (req, res) => {
-    watson.statusClassifier(req.params.id, (value) => {
-        res.json(value);
+/** Classifier を表示する。 */
+exports.list = (req, res) => {
+    watson.listClassifier((value) => {
+        listStatus(value.classifiers, [], (value) => {
+            res.render('classifier', {list: value});
+        });
     });
 };
 
@@ -43,9 +51,28 @@ exports.delete = (req, res) => {
     });
 };
 
+// Classify の結果配列 (src) よりメッセージを付加して配列 (dst) を作成して、コールバックする。
+const listAnswer = (src, dst, now, callback) => {
+    const num = dst.length;
+    if (num === src.length) {
+        callback(dst);
+    } else {
+        watson.askClassName(src[num].class_name, now, (value) => {
+            value.confidence = src[num].confidence;
+            dst.push(value);
+            listAnswer(src, dst, now, callback);
+        });
+    }
+};
+
 /** Classify */
 exports.classify = (req, res) => {
-    watson.classify(req.params.id, req.query.text, (value) => {
-        res.json(value);
+    watson.classify(req.params.id, req.query.text, (raw) => {
+        listAnswer(raw.classes, [], req.query.now, (table) => {
+            res.json({
+                "raw": raw,
+                "table": table
+            });
+        });
     });
 };

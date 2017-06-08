@@ -47,7 +47,7 @@
     </form>
 
     <form id="classifyFormId">
-        <table class="table table-striped">
+        <table id="classifierTableId" class="table table-striped">
             <thead>
             <tr>
                 <th></th>
@@ -60,22 +60,25 @@
             </tr>
             </thead>
             <tbody>
-            <% for(var i = 0; i < list.length; i++){ %>
+            <% for(let i = 0, length = list.length; i < length; i++){ %>
             <tr>
+                <%
+                    let checked = '';
+                    if ('Available' === list[i].status) {
+                        checked = 'checked="checked"';
+                    }
+                %>
                 <td>
                     <input type="radio" id="<%= list[i].classifier_id %>RadioId" name="classifierRadio"
-                           value="<%= list[i].classifier_id %>">
+                           value="<%= list[i].classifier_id %>" <%= checked %>>
                 </td>
                 <td><%= list[i].classifier_id %></td>
                 <td><%= list[i].name %></td>
                 <td><%= list[i].language %></td>
                 <td><%= list[i].created %></td>
-                <td id="<%= list[i].classifier_id %>StatusId">unknown</td>
-                <script>status('<%= list[i].classifier_id %>');</script>
+                <td><%= list[i].status %></td>
                 <td>
-                    <a href="javascript:deleteClassifier('<%= list[i].classifier_id %>');">
-                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                    </a>
+                    <a href="#"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
                 </td>
             </tr>
             <% } %>
@@ -99,7 +102,7 @@
             <li class="active"><a href="#jsonTabId" data-toggle="tab">JSON</a></li>
             <li><a href="#tableTabId" data-toggle="tab">Table</a></li>
         </ul>
-        </br>
+        <br>
         <div id="tabId" class="tab-content">
             <div class="tab-pane in active" id="jsonTabId">
                 <div id="resultJsonId"></div>

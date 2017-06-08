@@ -14,14 +14,14 @@ exports.classifier = require('./classifier.js');
 
 /** Watson に尋ねる。 */
 exports.ask = (req, res) => {
-    watson.ask(req.query.text, req.query.now, function (value) {
+    watson.ask(req.query.text, req.query.now, (value) => {
         res.send(value);
     });
 };
 
 /** クラス名を問合せる。 */
 exports.askClassName = (req, res) => {
-    watson.askClassName(req.query.text, req.query.now, function (value) {
+    watson.askClassName(req.query.text, req.query.now, (value) => {
         res.send(value);
     });
 };

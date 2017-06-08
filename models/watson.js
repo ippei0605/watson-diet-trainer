@@ -13,7 +13,6 @@ const context = require('./../utils/context');
 /** データベース */
 const db = context.cloudant.db.use(context.DB_NAME);
 
-
 // 定型コールバックする。
 const handler = (err, response, callback) => {
     if (err) {

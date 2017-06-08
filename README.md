@@ -4,6 +4,7 @@
 ### version 2.0.0
 * テキスト読み上げの対応ブラウザを増やすため、Watson Text To Speech から Speech Synthesis API に変更しました。
 * クライアント HTML および JavaScript は ES6 未対応 (PC Chrome、Firefox、Safari、iOS Chrome、Firefox、Safari で同じ動作にならなかったため。)
+* IE 対応 (アロー関数非対応、連続する ajax で 一部 502 エラーが発生)
 
 ## はじめに  
 「さわってみようWatson on Bluemix」(IBM) の Node-RED のアプリをベースに、次の変更をしました。
@@ -131,9 +132,8 @@
 |/answer/csv|GET|answer の全コンテンツを対象とした Natural Language Classifier　のトレーニングデータを返す。|
 |/classifier|GET|登録済みの Classifier の一覧を返す。|
 |/classifier|POST|Classifier を新規登録して結果を返す。(トレーニング)|
-|/classifier/:id/|GET|Classifier のステータスを返す。|
 |/classifier/:id/delete|GET|Classifier を削除して結果を返す。|
-|/classifier/:id/classify|GET|クラス分類して結果を返す。|
+|/classifier/:id/classify|GET|クラス分類して結果 (raw および table) を返す。|
 
 ## まとめ
 * 現時点では、Dialog による段階的な会話 (選択肢) による最適解を探す機能を削除したため、Natural Language Classifier の分類による一発回答の Chatbot です。

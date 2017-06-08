@@ -16,32 +16,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
             integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
             crossorigin="anonymous"></script>
-    <script>
-        $(document).ready(() => {
-            var downloadId = $('#downloadId');
-
-            var filename = {
-                "/answer": "answer.json",
-                "/answer/csv": "diet-classifier.csv",
-            }
-
-            downloadId.on('click', function () {
-                var url = $('#commandId').val();
-                downloadId.prop('href', url);
-                downloadId.prop('download', filename[url]);
-            });
-
-            $('#listId').on('click', function () {
-                var url = $('#commandId').val();
-                $.ajax({
-                    url: url,
-                    success: function (data) {
-                        $('#resultId').html('<pre>' + data + '</pre>');
-                    }
-                });
-            });
-        });
-    </script>
+    <script src="/maintenance.js"></script>
 </head>
 
 <body>
@@ -55,6 +30,8 @@
 <div class="container">
     <br>
     <div class="list-group">
+        <a class="list-group-item" href="/">
+            <span class="glyphicon glyphicon-link" aria-hidden="true"></span>　Chatbot</a>
         <a class="list-group-item" href="/classifier">
             <span class="glyphicon glyphicon-link" aria-hidden="true"></span>　Classifier</a>
     </div>

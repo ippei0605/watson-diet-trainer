@@ -10,11 +10,6 @@
  * Watson アニメーション
  * @param flag true=表示, false=非表示
  */
-function loadingView(flag) {
-    $('#loading-view').remove();
-    if (!flag) return;
-    $('<div id="loading-view" />').appendTo('body');
-}
 
 // 現在時刻を返す。
 function getNow() {

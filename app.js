@@ -33,7 +33,6 @@ app.get('/ask-classname', routes.askClassName);
 app.get('/answer', routes.answerstore.list);
 app.get('/answer/csv', routes.answerstore.exportCsv);
 app.get('/classifier', routes.classifier.list);
-app.get('/classifier/:id/', routes.classifier.status);
 app.post('/classifier', upload.single('training-csv'), routes.classifier.create);
 app.get('/classifier/:id/delete', routes.classifier.delete);
 app.get('/classifier/:id/classify', routes.classifier.classify);
