@@ -134,7 +134,7 @@ $(function () {
     function caniuse(object, name) {
         console.log(name + ': ', object);
         if (!object) {
-            conversationFieldId.append(formatTag(answerTag, [name + ' 非対応', '']));
+            conversationFieldId.append(formatTag(answerTag, [name + '<br>非対応', '']));
         }
     }
 
@@ -146,7 +146,6 @@ $(function () {
 
             // フォームを表示する。
             searchFormId.show();
-            qId.focus();
 
             // TODO iOS ブラウザでテキスト読上げさせるための御呪い。(もっと良い方法はないか？)
             textToSpeech('。');
