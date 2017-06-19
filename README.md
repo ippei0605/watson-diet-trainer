@@ -1,6 +1,11 @@
 # Watson Diet Trainer
 
 ## 更新履歴
+### version 2.0.1
+* watson-speech.min.js v ???
+* STT
+
+
 ### version 2.0.0
 * テキスト読み上げの対応ブラウザを増やすため、Watson Text To Speech から Speech Synthesis API に変更しました。
 * クライアント HTML および JavaScript は ES6 未対応 (PC Chrome、Firefox、Safari、iOS Chrome、Firefox、Safari で同じ動作にならなかったため。)

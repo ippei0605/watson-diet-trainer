@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Speech to Text (only PC Firefox or Chrome)</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous">
+    <link rel="stylesheet" href="/mybootstrap.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+    <script src="/watson-speech.min.js"></script>
+    <script src="/stt.js"></script>
+</head>
+
+<body>
+
+<header>
+    <div class="container-fluid text-center">
+        <div class="row">
+            <div class="col-xs-1">
+                <a href="maintenance.html"><h4><span class="glyphicon glyphicon-home" aria-hidden="true"></span></h4>
+                </a></div>
+            <div class="col-xs-10"><h4>Speech to Text (only PC Firefox or Chrome)</h4></div>
+        </div>
+    </div>
+</header>
+
+<div class="container-fluid" style="margin: 15px 0 0 0">
+    <form id="modelFormId">
+        <div class="row">
+            <div class="col-sm-8 text-left">
+                <button type="button" class="btn btn-default" id="addCorpusId">Add corpus</button>
+                <button type="button" class="btn btn-default" id="trainId">Train</button>
+            </div>
+            <div class="col-sm-4 text-right" id="deleteModelId">
+                <button type="button" class="btn btn-danger text-right">
+                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                </button>
+            </div>
+        </div>
+        <table id="modelTableId" class="table table-striped">
+            <thead>
+            <tr>
+                <th></th>
+                <th>customization_id</th>
+                <th>name</th>
+                <th>created</th>
+                <th>status</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td><input type="radio" id="defaultRadioId" name="modelRadio"
+                           value="default" checked="checked"></td>
+                <td>default</td>
+                <td>ja-JP_BroadbandModel</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <% for(let i = 0, length = list.length; i < length; i++){ %>
+            <tr>
+                <td>
+                    <input type="radio" id="<%= list[i].customization_id %>RadioId" name="modelRadio"
+                           value="<%= list[i].customization_id %>">
+                </td>
+                <td><%= list[i].customization_id %></td>
+                <td><%= list[i].name %></td>
+                <td><%= list[i].created %></td>
+                <td><%= list[i].status %></td>
+            </tr>
+            <% } %>
+            </tbody>
+        </table>
+        <button type="button" class="btn btn-block btn-info" id="createModelId">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+            Add
+        </button>
+        <hr>
+
+        <h4>WatsonSpeech.SpeechToText # recognizeMicrophone</h4>
+        <div class="btn-group btn-group-justified" role="group">
+            <div class="btn-group" role="group">
+                <button type="button" id="sttStartId" class="btn btn-default">
+                    <span class="glyphicon glyphicon-record" aria-hidden="true"></span>
+                    Record
+                </button>
+            </div>
+            <div class="btn-group" role="group">
+                <button type="button" id="sttStopId" class="btn btn-default">
+                    <span class="glyphicon glyphicon-stop" aria-hidden="true"></span>
+                    Stop
+                </button>
+            </div>
+        </div>
+
+    </form>
+    <div>
+        <h4>Output</h4>
+        <p id="outputId">--</p>
+    </div>
+    <hr>
+    <div id="resultId"></div>
+</div>
+
+<!-- Create Modal -->
+<div class="modal" id="createModalId" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span>×</span></button>
+                <h4 class="modal-title">Create</h4>
+            </div>
+            <div class="modal-body">
+                <p>「ja-JP_BroadbandModel」をベースにカスタムモデルを作成します。</p>
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="createNameId">name</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="createNameId" placeholder="名前" value="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="createDescriptionId">description</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="createDescriptionId" placeholder="説明" value="">
+                        </div>
+                    </div>
+                </form>
+                <p class="text-right">よろしいですか？</p>
+            </div>
+            <div class="modal-footer">
+                <button id="cancelBtnId" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button id="createBtnId" type="button" class="btn btn-primary">Create</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal" id="deleteModalId" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span>×</span></button>
+                <h4 class="modal-title">Delete classifier</h4>
+            </div>
+            <div class="modal-body">
+                <p>「<span id="deleteId"></span>」を削除します。よろしいですか？</p>
+            </div>
+            <div class="modal-footer">
+                <button id="cancelBtnId" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button id="deleteBtnId" type="button" class="btn btn-danger">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Result Modal -->
+<div class="modal" id="resultModalId" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span>×</span></button>
+                <h4 class="modal-title">Result</h4>
+            </div>
+            <div class="modal-body">
+                <div id="resultModalMessageId">Runnig</div>
+            </div>
+            <div class="modal-footer">
+                <button id="okBtnId" type="button" class="btn btn-default" data-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Corpus -->
+<div class="modal" id="corpusModalId" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span>×</span></button>
+                <h4 class="modal-title">Add corpus</h4>
+            </div>
+            <div class="modal-body">
+                <form id="uploadCorpusId">
+                    <div class="input-group">
+                        <span class="input-group-addon">Add corpus</span>
+                        <input type="file" id="corpusfileId" name="corpus-txt" class="form-control">
+                        <span class="input-group-btn">
+                            <button id="uploadCorpusBtnId" type="button" class="btn btn-primary">
+                                <span class="glyphicon glyphicon-upload" aria-hidden="true"></span>
+                            </button>
+                        </span>
+                    </div>
+                </form>
+                <hr>
+                <div id="corpusResultId"></div>
+            </div>
+            <div class="modal-footer">
+                <button id="corpusCloseBtnId" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

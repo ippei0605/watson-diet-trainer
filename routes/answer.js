@@ -8,18 +8,31 @@
 'use strict';
 
 // モジュールを読込む。
+const express = require('express');
 const watson = require('../models/watson');
 
-/** コンテンツを表示する。(テスト用) */
-exports.list = (req, res) => {
-    watson.listContent((value) => {
+// ルーターを作成する。
+const router = express.Router();
+
+/** コンテンツを表示する。 */
+router.get('/', (req, res) => {
+    watson.listAll((value) => {
         res.send(JSON.stringify({"docs": value}, undefined, 2));
     });
-};
+});
 
-/** トレーニングデータを表示する。(テスト用) */
-exports.exportCsv = (req, res) => {
-    watson.listContent((value) => {
-        res.send(watson.exportCsv(value));
+/** トレーニングデータを表示する。 */
+router.get('/csv', (req, res) => {
+    watson.exportCsv((csv) => {
+        res.send(csv);
     });
-};
+});
+
+/** トレーニングデータを表示する。 */
+router.get('/corpus', (req, res) => {
+    watson.listContent((value) => {
+        res.send(watson.exportCorpus(value));
+    });
+});
+
+module.exports = router;

@@ -102,7 +102,7 @@ $(function () {
         $('body').append('<div id="loading-view" />');
 
         $.ajax({
-            type: "GET",
+            type: "POST",
             url: '/classifier/' + $('#deleteId').text() + '/delete',
             data: {}
         }).done(function (value) {

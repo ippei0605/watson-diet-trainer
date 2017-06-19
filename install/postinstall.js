@@ -17,7 +17,7 @@
 const context = require('../utils/context');
 
 // データ
-const DATA_FILENAME = 'answer.json';
+const DATA_FILENAME = 'diet-answer.json';
 
 // 設計文書 Map Function: list
 const MAP_LIST_FILENAME = 'list.function';

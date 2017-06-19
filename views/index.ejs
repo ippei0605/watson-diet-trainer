@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
-    <title>Watson Diet Trainer</title>
+    <title><%= title %></title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           rel="stylesheet"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
@@ -17,6 +17,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
             integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
             crossorigin="anonymous"></script>
+    <script src="/watson-speech.min.js"></script>
     <script src="/common.js"></script>
     <script src="/index.js"></script>
 </head>
@@ -25,16 +26,21 @@
 
 <header>
     <div class="container-fluid text-center">
-        <h4>Watson Diet Trainer</h4>
+        <h4><%= title %></h4>
     </div>
 </header>
 
 <div class="container-fluid">
 
     <div id="menuId">
-        <button type="button" id="startBtnId" class="btn btn-default btn-block">チャットボットを開始する
-        </button>
+        <button type="button" id="startBtnId" class="btn btn-default btn-block">チャットボットを開始する (非Watsonの音声)</button>
+        <button type="button" id="startBtnWatsonId" class="btn btn-default btn-block">チャットボットを開始する (Watsonの音声)</button>
         <a href="/maintenance.html" class="btn btn-danger btn-block">メンテナンス画面へ</a>
+        <br>
+        <ul>
+            <li>非Watsonの音声: Speech Recognition APIで音声認識、Speech Synthesis API でテキスト読み上げします。</li>
+            <li>Watsonの音声: Watson Speech to Textで音声認識、Text to Speech でテキスト読み上げします。<span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> PC の Firefox、Chrome に対応しています。</li>
+        </ul>
     </div>
 
     <div class="bs-component">
@@ -50,6 +56,9 @@
             <input type="text" class="form-control" id="qId" placeholder="メッセージを入力">
             <span class="input-group-btn">
                 <button type="button" id="recordId" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-record" aria-hidden="true"></span>
+                </button>
+                <button type="button" id="sttId" class="btn btn-primary">
                     <span class="glyphicon glyphicon-record" aria-hidden="true"></span>
                 </button>
                 <button type="submit" class="btn btn-primary">

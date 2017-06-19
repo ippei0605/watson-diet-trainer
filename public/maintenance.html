@@ -33,24 +33,27 @@
         <a class="list-group-item" href="/">
             <span class="glyphicon glyphicon-link" aria-hidden="true"></span>　Chatbot</a>
         <a class="list-group-item" href="/classifier">
-            <span class="glyphicon glyphicon-link" aria-hidden="true"></span>　Classifier</a>
+            <span class="glyphicon glyphicon-link" aria-hidden="true"></span>　Natural Language Classifier</a>
+        <a class="list-group-item" href="/stt">
+            <span class="glyphicon glyphicon-link" aria-hidden="true"></span>　Speech to Text (only PC Firefox or Chrome)</a>
     </div>
 
     <div class="input-group">
-        <span class="input-group-addon">Database</span>
-        <select class="form-control" id="commandId" style="border-radius: 0!important; -webkit-appearance:none;">
-            <option value="/answer">All contents</option>
-            <option value="/answer/csv">Export training-csv</option>
-        </select>
-        <span class="input-group-btn">
+    <span class="input-group-addon">Database</span>
+    <select class="form-control" id="commandId" style="border-radius: 0!important; -webkit-appearance:none;">
+        <option value="/answer">All contents</option>
+        <option value="/answer/csv">Export training-csv</option>
+        <option value="/answer/corpus">Export Speech to Text Corpus</option>
+    </select>
+    <span class="input-group-btn">
         <a id="listId" class="btn btn-primary" role="button">
             <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
         </a>
         <a id="downloadId" class="btn btn-primary" role="button">
             <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
         </a>
-    </span>
-    </div>
+        </span>
+</div>
     <div id="resultId" style="margin: 5px 0 0 0"></div>
 
 </div>

@@ -8,8 +8,19 @@
 'use strict';
 
 // モジュールを読込む。
-const context = require('../utils/context');
+const express = require('express');
+const fs = require('fs');
+const multer = require('multer');
+const path = require('path');
 const watson = require('../models/watson');
+
+// ルーターを作成する。
+const router = express.Router();
+
+// ファイルアップロードを設定する。
+const upload = multer({
+    "dest": "upload/"
+});
 
 /**
  * Classifier の一覧 (src) にステータスを付加した一覧を表示する。
@@ -27,31 +38,6 @@ const listStatus = (res, src, dst) => {
             listStatus(res, src, dst);
         });
     }
-};
-
-/** Classifier を表示する。 */
-exports.list = (req, res) => {
-    watson.listClassifier((value) => {
-        listStatus(res, value.classifiers, []);
-    });
-};
-
-/** Classifier を新規作成する。 */
-exports.create = (req, res) => {
-    watson.createClassifier({
-        language: 'ja',
-        name: context.path.basename(req.file.originalname, '.csv'),
-        training_data: context.fs.createReadStream(req.file.path)
-    }, (value) => {
-        res.json(value);
-    });
-};
-
-/** Classifier を削除する。 */
-exports.delete = (req, res) => {
-    watson.removeClassifier(req.params.id, (value) => {
-        res.json(value);
-    });
 };
 
 /**
@@ -77,9 +63,36 @@ const listAnswer = (res, raw, table, now) => {
     }
 };
 
+/** Classifier を表示する。 */
+router.get('/', (req, res) => {
+    watson.listClassifier((value) => {
+        listStatus(res, value.classifiers, []);
+    });
+});
+
+/** Classifier を新規作成する。 */
+router.post('/', upload.single('training-csv'), (req, res) => {
+    watson.createClassifier({
+        language: 'ja',
+        name: path.basename(req.file.originalname, '.csv'),
+        training_data: fs.createReadStream(req.file.path)
+    }, (value) => {
+        res.json(value);
+    });
+});
+
+/** Classifier を削除する。 */
+router.post('/:id/delete', (req, res) => {
+    watson.removeClassifier(req.params.id, (value) => {
+        res.json(value);
+    });
+});
+
 /** Classify */
-exports.classify = (req, res) => {
+router.get('/:id/classify', (req, res) => {
     watson.classify(req.params.id, req.query.text, (raw) => {
         listAnswer(res, raw, [], req.query.now);
     });
-};
+});
+
+module.exports = router;

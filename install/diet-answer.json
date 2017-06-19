@@ -1,6 +1,10 @@
 {
   "docs": [
     {
+      "_id": "app_settings",
+      "name": "Watson Diet Trainer"
+    },
+    {
       "_id": "general_whoareyou",
       "message": "私はワトソンです。IBMから来ました。よろしくお願いします。",
       "questions": [

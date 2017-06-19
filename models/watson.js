@@ -10,8 +10,61 @@
 // モジュールを読込む。
 const context = require('./../utils/context');
 
-/** データベース */
+// データベース
 const db = context.cloudant.db.use(context.DB_NAME);
+
+/** アプリケーションの設定値を取得する。 */
+exports.getAppSettings = (callback) => {
+    db.get('app_settings', (err, doc) => {
+        if (err) {
+            console.log('error', err);
+            callback(err);
+        } else {
+            callback(doc)
+        }
+    });
+};
+
+/**
+ * Watson Speech to Text のトークンおよびモデルを取得する。
+ * @param callbackNg - 失敗時のコールバック
+ * @param callbackOk - 成功時のコールバック
+ * @see {https://github.com/watson-developer-cloud/node-sdk#authorization}
+ */
+exports.getSttToken = (callbackNg, callbackOk) => {
+    context.sttAuth.getToken((err, sttToken) => {
+        if (err) {
+            console.log('Error retrieving token: ', err);
+            callbackNg(err);
+        } else {
+            //TODO カスタムモデルの情報を付加、環境変数にあれば設定する。
+            callbackOk({
+                "token": sttToken,
+                "model": context.STT_MODEL
+            });
+        }
+    });
+};
+
+/**
+ * Watson Text to Speech のトークンおよびボイスを取得する。
+ * @param callbackNg - 失敗時のコールバック
+ * @param callbackOk - 成功時のコールバック
+ * @see {https://github.com/watson-developer-cloud/node-sdk#authorization}
+ */
+exports.getTtsToken = (callbackNg, callbackOk) => {
+    context.ttsAuth.getToken((err, ttsToken) => {
+        if (err) {
+            console.log('Error retrieving token: ', err);
+            callbackNg(err);
+        } else {
+            callbackOk({
+                "token": ttsToken,
+                "voice": context.TTS_VOICE
+            });
+        }
+    });
+};
 
 // 定型コールバックする。
 const handler = (err, response, callback) => {
@@ -113,32 +166,61 @@ exports.ask = (text, now, callback) => {
     });
 };
 
+
 /** 全コンテンツを取得する。 */
-exports.listContent = (callback) => {
+const listContent = (callback) => {
     db.view('answers', 'list', (err, body) => {
-        let value = [];
+        let list = [];
         body.rows.forEach((row) => {
             delete row.value._rev;
-            value.push(row.value);
+            list.push(row.value);
         });
-        callback(value);
+        callback(list);
     });
 };
 
-// CSV形式の行を出力する。
-const formatLine = (text, class_name) => {
-    return '"' + text + '","' + class_name + '"\n';
+/** 全データ (アプリケーション設定値およびコンテンツ) を取得する。 */
+exports.listAll = (callback) => {
+    listContent((list) => {
+        db.get('app_settings', (err, doc) => {
+            list.unshift({
+                "_id": doc._id,
+                "name": doc.name
+            });
+            callback(list);
+        });
+    });
 };
 
-/** コンテンツリストからCVS形式のトレーニングデータを取得する。*/
-exports.exportCsv = (list) => {
+/** コンテンツリストからCVS形式のトレーニングデータを作成する。*/
+exports.exportCsv = (callback) => {
+    listContent((list) => {
+        let csv = '';
+        list.forEach((doc) => {
+            const questions = doc.questions;
+            if (questions) {
+                questions.forEach((question) => {
+                    csv += '"' + question + '","' + doc._id + '"\n';
+                });
+            }
+        });
+        callback(csv);
+    });
+
+
+};
+
+/** コンテンツリストから Speech to Text 用のコーパスを作成する。*/
+exports.exportCorpus = (list) => {
     let buffer = '';
     list.forEach((doc) => {
+        buffer += '質問\n'
         if (doc.questions !== undefined) {
             doc.questions.forEach((question) => {
-                buffer += formatLine(question, doc._id);
+                buffer += question + '\n';
             });
         }
+        buffer += '回答\n' + doc.message + '\n';
     });
     return buffer;
 };
