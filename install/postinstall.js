@@ -16,8 +16,11 @@
 // モジュールを読込む。
 const context = require('../utils/context');
 
-// データ
-const DATA_FILENAME = 'diet-answer.json';
+// コンテンツデータ
+const CONTENT_FILENAME = 'diet-answer.json';
+
+// トレーニングデータ
+const TRAINING_FILENAME = 'diet-classifier.csv';
 
 // 設計文書 Map Function: list
 const MAP_LIST_FILENAME = 'list.function';
@@ -51,8 +54,8 @@ const insertDesignDocument = (db, doc) => {
 };
 
 // データを登録する。
-const insertDocument = (db) => {
-    let data = JSON.parse(readFile(DATA_FILENAME));
+const insertDocuments = (db) => {
+    let data = JSON.parse(readFile(CONTENT_FILENAME));
     db.bulk(data, (err) => {
         if (!err) {
             console.log('文書を登録しました。');
@@ -64,23 +67,42 @@ const insertDocument = (db) => {
 };
 
 // データベースを作成する。
-const createDatabase = (database, doc) => {
+const createDatabase = () => {
     // データベースの存在をチェックする。
-    context.cloudant.db.get(database, (err, body) => {
+    context.cloudant.db.get(context.DB_NAME, (err, body) => {
         if (err && err.error === 'not_found') {
             console.log('アプリに必要なデータベースがありません。');
-            context.cloudant.db.create(database, (err) => {
-                if (!err) {
-                    console.log('データベース[%s]を作成しました。', database);
-                    const db = context.cloudant.db.use(database);
-                    insertDesignDocument(db, doc);
-                    insertDocument(db);
-                } else {
+            context.cloudant.db.create(context.DB_NAME, (err) => {
+                if (err) {
                     console.log(err);
+                } else {
+                    console.log('データベース[%s]を作成しました。', context.DB_NAME);
+                    const db = context.cloudant.db.use(context.DB_NAME);
+                    insertDesignDocument(db, DESIGN_DOCUMENT);
+                    insertDocuments(db);
                 }
             });
         }
     });
 };
 
-createDatabase(context.DB_NAME, DESIGN_DOCUMENT);
+// NLC の Classifier を作成する。
+const createClassifier = () => {
+    const params = {
+        "language": "ja",
+        "name": "diet-classifier",
+        "training_data": context.fs.createReadStream(__dirname + '/' + TRAINING_FILENAME)
+    };
+    context.nlc.create(params, (err, response) => {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log('NLC の Classifier を作成します。');
+            console.log(response);
+        }
+    });
+}
+
+// 処理を開始する。
+createDatabase();
+createClassifier();
