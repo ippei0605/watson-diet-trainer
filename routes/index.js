@@ -10,6 +10,8 @@
 // モジュールを読込む。
 const watson = require('../models/watson');
 
+watson.a
+
 /**
  * Watson Speech to Text と Text to Speech のトークンを取得して、JSON を返す。
  */

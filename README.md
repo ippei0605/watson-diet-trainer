@@ -95,20 +95,15 @@
     │
     ├─public
     │      chatbot.css
-    │      classifier.js            Classifier クライアント JavaScript
     │      favicon.ico
     │      index.js                 クライアント JavaScript
-    │      maintenance.html         メンテナンス画面
     │      mybootstrap.css
     │      watson_black_animate.gif
     │      
     ├─routes
-    │      answer.js          ルーティング (DB参照)
-    │      classifier.js      ルーティング (Natural Language Classifier 管理)
     │      index.js           ルーティング
     │      
     ├─views
-    │      classifier.ejs     管理画面
     │      index.ejs          Chatbot 画面
     │      
     └─utils
@@ -133,12 +128,7 @@
 |/|GET|Chatbot 画面を表示する。|
 |/ask|GET|Natural Language Classifier で質問をクラス分類して、回答を返す。|
 |/ask-classname|GET|クラス名指定により回答を返す。(定型文に使用)|
-|/answer|GET|answer の全コンテンツを返す。|
-|/answer/csv|GET|answer の全コンテンツを対象とした Natural Language Classifier　のトレーニングデータを返す。|
-|/classifier|GET|登録済みの Classifier の一覧を返す。|
-|/classifier|POST|Classifier を新規登録して結果を返す。(トレーニング)|
-|/classifier/:id/delete|GET|Classifier を削除して結果を返す。|
-|/classifier/:id/classify|GET|クラス分類して結果 (raw および table) を返す。|
+|/use-watson-speech|GET|Watson Speech to Text と Text to Speech のトークンを取得して、JSON を返す。|
 
 ## まとめ
 * 現時点では、Dialog による段階的な会話 (選択肢) による最適解を探す機能を削除したため、Natural Language Classifier の分類による一発回答の Chatbot です。

@@ -12,8 +12,6 @@ const cfenv = require('cfenv');
 const cloudant = require('cloudant');
 const vcapServices = require('vcap_services');
 const watson = require('watson-developer-cloud');
-const fs = require('fs');
-const path = require('path');
 
 /** データベース名 */
 exports.DB_NAME = 'answer';
@@ -75,4 +73,16 @@ exports.ttsAuth = new watson.AuthorizationV1(ttsCreds);
 exports.fs = fs;
 
 /** Path */
-exports.path = path;
+const path = path;
+
+const text = 'HAHAHA';
+
+/**
+ *
+ * @type {{text: string, path: *}}
+ */
+const context = {
+    text:text,
+    path:path
+
+};

@@ -48,9 +48,9 @@ exports.getSttToken = (callbackNg, callbackOk) => {
 
 /**
  * Watson Text to Speech のトークンおよびボイスを取得する。
- * @param callbackNg - 失敗時のコールバック
- * @param callbackOk - 成功時のコールバック
- * @see {https://github.com/watson-developer-cloud/node-sdk#authorization}
+ * @param {*} callbackNg 失敗時のコールバック
+ * @param {function} callbackOk 成功時のコールバック
+ * @see {@link https://github.com/watson-developer-cloud/node-sdk#authorization}
  */
 exports.getTtsToken = (callbackNg, callbackOk) => {
     context.ttsAuth.getToken((err, ttsToken) => {
@@ -64,35 +64,6 @@ exports.getTtsToken = (callbackNg, callbackOk) => {
             });
         }
     });
-};
-
-// 定型コールバックする。
-const handler = (err, response, callback) => {
-    if (err) {
-        callback(err);
-    } else {
-        callback(response);
-    }
-};
-
-/** Natural Language Classifier の一覧を返す。 */
-exports.listClassifier = (callback) => {
-    context.nlc.list({}, (err, response) => handler(err, response, callback));
-};
-
-/** Natural Language Classifier のステータスを返す。 */
-exports.statusClassifier = (id, callback) => {
-    context.nlc.status({classifier_id: id}, (err, response) => handler(err, response, callback));
-};
-
-/** Natural Language Classifier を新規作成 (トレーニング) する。 */
-exports.createClassifier = (params, callback) => {
-    context.nlc.create(params, (err, response) => handler(err, response, callback));
-};
-
-/** Natural Language Classifier を削除する。 */
-exports.removeClassifier = (id, callback) => {
-    context.nlc.remove({classifier_id: id}, (err, response) => handler(err, response, callback));
 };
 
 // エラーオブジェクトからメッセージを取得する。
@@ -151,7 +122,18 @@ exports.askClassName = (text, now, callback) => {
     getAnswer(text, 1, now, callback);
 };
 
-/** テキストを分類する。 */
+/**
+ * テキストを分類する。
+ * @param text string - テキスト
+ * @param now string - 現在時刻
+ * @param callback * - コールバック
+ */
+/**
+ *
+ * @param text
+ * @param now
+ * @param callback
+ */
 exports.ask = (text, now, callback) => {
     context.nlc.classify({
         text: text,
@@ -165,7 +147,6 @@ exports.ask = (text, now, callback) => {
         }
     });
 };
-
 
 /** 全コンテンツを取得する。 */
 const listContent = (callback) => {
@@ -206,15 +187,13 @@ exports.exportCsv = (callback) => {
         });
         callback(csv);
     });
-
-
 };
 
 /** コンテンツリストから Speech to Text 用のコーパスを作成する。*/
 exports.exportCorpus = (list) => {
     let buffer = '';
     list.forEach((doc) => {
-        buffer += '質問\n'
+        buffer += '質問\n';
         if (doc.questions !== undefined) {
             doc.questions.forEach((question) => {
                 buffer += question + '\n';
@@ -223,12 +202,4 @@ exports.exportCorpus = (list) => {
         buffer += '回答\n' + doc.message + '\n';
     });
     return buffer;
-};
-
-/** Classify */
-exports.classify = (id, text, callback) => {
-    context.nlc.classify({
-        text: text,
-        classifier_id: id
-    }, (err, response) => handler(err, response, callback));
 };

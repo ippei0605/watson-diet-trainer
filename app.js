@@ -31,12 +31,7 @@ app.get('/ask', routes.ask);
 app.get('/ask-classname', routes.askClassName);
 app.get('/use-watson-speech', routes.getWatsonSpeechContext);
 
-
-app.use('/answer', require('./routes/answer.js'));
-app.use('/classifier', require('./routes/classifier.js'));
-app.use('/stt', require('./routes/stt.js'));
-
 // リクエトを受付ける。
-app.listen(context.appEnv.port, function () {
+app.listen(context.appEnv.port, () => {
     console.log('server starting on ' + context.appEnv.url);
 });
