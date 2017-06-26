@@ -6,9 +6,6 @@
 
 'use strict';
 
-/** 初期設定: 会話制御 */
-let answerNumber = 0;
-
 /** テンプレートタグ: 質問 */
 const questionTag = '<div class="row"><div class="col-xs-11"><p class="balloon-right"><%= s %></p></div></div>';
 
@@ -46,7 +43,12 @@ function formatTag(tag, s) {
 
 /** 確度を編集する。 */
 function formatConfidence(confidence) {
-    return '[' + parseInt(Math.abs(confidence) * 100) + '%]';
+    let value = '';
+    // 0 の時は表示しない。 (定型メッセージ)
+    if (confidence !== 0) {
+        value = '[' + parseInt(Math.abs(confidence) * 100) + '%]';
+    }
+    return value;
 }
 
 /** 定型メッセージ用の JSON を返す。 */
@@ -78,11 +80,12 @@ $(function () {
 
     /** テキストを読み上げる。 */
     function textToSpeech(text) {
-        WatsonSpeech.TextToSpeech.synthesize({
-            "token": watsonSpeechContext.tts.token,
+        const param = {
             "text": text,
+            "token": watsonSpeechContext.tts.token,
             "voice": watsonSpeechContext.tts.voice
-        });
+        };
+        WatsonSpeech.TextToSpeech.synthesize(param);
     }
 
     /** 回答を表示する。 */
@@ -102,8 +105,6 @@ $(function () {
 
     /** Waston に質問する。 */
     function ask(url, text) {
-        answerNumber++;
-
         // Watson GIF アニメ ON
         $('body').append('<div id="loading-view" />');
 
@@ -132,36 +133,6 @@ $(function () {
         }
     }
 
-    /** 初期処理を実行する。 */
-    function init() {
-        if (answerNumber === 0) {
-            // 音声認識ボタンを隠す。
-            sttId.hide();
-
-            // ブラウザが非対応な機能を表示する。
-            caniuse(getUserMedia, 'getUserMedia API');
-
-            // Watson Speech to text と Text to Speech を使用するための情報を取得する。
-            $.ajax({
-                type: "GET",
-                url: "/use-watson-speech"
-            }).done(function (value) {
-                // 情報をコンテキストにセットする。
-                watsonSpeechContext = value;
-                // 初回挨拶する。
-                ask('ask-classname', 'general_hello');
-            }).fail(function (value) {
-                console.log("error: ", value);
-                viewAnswer(getMessageJson('error_watson_auth'));
-            }).always(function (value) {
-                // getUserMedia があれば音声認識ボタンを表示する。
-                if (getUserMedia) {
-                    sttId.show();
-                }
-            });
-        }
-    }
-
     /** 音声認識ボタンクリック */
     sttId.on('click', function () {
         if (recording) {
@@ -178,6 +149,7 @@ $(function () {
             if (watsonSpeechContext.stt.customization_id) {
                 param.customization_id = watsonSpeechContext.stt.customization_id;
             }
+
             stream = WatsonSpeech.SpeechToText.recognizeMicrophone(param);
 
             stream.on('error', function (err) {
@@ -217,5 +189,31 @@ $(function () {
         return false;
     });
 
-    init();
+    /** 初期処理を実行する。 */
+    (function () {
+        // 音声認識ボタンを隠す。
+        sttId.hide();
+
+        // ブラウザが非対応な機能を表示する。
+        caniuse(getUserMedia, 'getUserMedia API');
+
+        // Watson Speech to text と Text to Speech を使用するための情報を取得する。
+        $.ajax({
+            type: "GET",
+            url: "/use-watson-speech"
+        }).done(function (value) {
+            // 情報をコンテキストにセットする。
+            watsonSpeechContext = value;
+            // 初回挨拶する。
+            ask('ask-classname', 'general_hello');
+        }).fail(function (value) {
+            console.log("error: ", value);
+            viewAnswer(getMessageJson('error_watson_auth'));
+        }).always(function (value) {
+            // getUserMedia があれば音声認識ボタンを表示する。
+            if (getUserMedia) {
+                sttId.show();
+            }
+        });
+    })();
 });

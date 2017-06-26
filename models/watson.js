@@ -21,7 +21,7 @@ const gerErrorMessage = (err) => {
     console.log('error:', err);
     return ({
         "class_name": "",
-        "message": "エラーが発生しました。 message=" + err.message + ", code=" + err.code + ", discription=" + err.description,
+        "message": "エラーが発生しました。 " + err.error + " (code=" + err.code + ")",
         "confidence": 0
     });
 };
@@ -98,8 +98,8 @@ exports.getSttToken = (callbackNg, callbackOk) => {
                 "token": sttToken,
                 "model": context.STT_MODEL
             };
-            if(context.CUSTOMIZATION_ID){
-                value.custom = context.CUSTOMIZATION_ID;
+            if (context.CUSTOMIZATION_ID) {
+                value.customization_id = context.CUSTOMIZATION_ID;
             }
             callbackOk(value);
         }
@@ -133,7 +133,7 @@ exports.getTtsToken = (callbackNg, callbackOk) => {
  * @param callback {function} コールバック
  */
 exports.askClassName = (text, now, callback) => {
-    getAnswer(text, 1, now, callback);
+    getAnswer(text, 0, now, callback);
 };
 
 /**
