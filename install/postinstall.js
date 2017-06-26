@@ -1,11 +1,13 @@
 /**
- * @file Watson Diet Trainer: インストール後処理
+ * @file Watson Diet Trainer: インストール後処理 (package.json の scripts.postinstall で実行するように設定)
  *
  * <pre>
- * データベース「answer」が無い場合、次の処理を実行する。
- *   1. データベースを作成する。
- *   2. 設計文書を登録する。
- *   3. データを登録する。
+ * 1. データベース「answer」が無い場合、次の処理を実行する。
+ *   1-1 データベースを作成する。
+ *   1-2 設計文書を登録する。
+ *   1-3 データを登録する。
+ * 2. NLC の Classifier を作成する。
+ * (1 と 2 は並列処理)
  * </pre>
  *
  * @author Ippei SUZUKI
@@ -101,8 +103,9 @@ const createClassifier = () => {
             console.log(response);
         }
     });
-}
+};
 
-// 処理を開始する。
+// 処理1
 createDatabase();
+// 処理2
 createClassifier();

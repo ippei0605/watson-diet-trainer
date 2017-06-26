@@ -10,10 +10,10 @@
 // モジュールを読込む。
 const watson = require('../models/watson');
 
-watson.a
-
 /**
  * Watson Speech to Text と Text to Speech のトークンを取得して、JSON を返す。
+ * @param req {*} リクエスト
+ * @param res {*} レスポンス
  */
 exports.getWatsonSpeechContext = (req, res) => {
     watson.getSttToken(() => {
@@ -24,10 +24,9 @@ exports.getWatsonSpeechContext = (req, res) => {
         watson.getTtsToken((err) => {
             // 失敗時
             res.status(500).send('Error retrieving token');
-        },(ttsValue)=> {
+        }, (ttsValue) => {
             // 成功時
             res.send({
-                "use": true,
                 "stt": sttValue,
                 "tts": ttsValue
             });
@@ -35,22 +34,33 @@ exports.getWatsonSpeechContext = (req, res) => {
     });
 };
 
-
-/** Watson に尋ねる。 */
+/**
+ * Watson に尋ねる。
+ * @param req {*} リクエスト
+ * @param res {*} レスポンス
+ */
 exports.ask = (req, res) => {
     watson.ask(req.query.text, req.query.now, (value) => {
         res.send(value);
     });
 };
 
-/** クラス名を問合せる。 */
+/**
+ * クラス名を問合せる。
+ * @param req {*} リクエスト
+ * @param res {*} レスポンス
+ */
 exports.askClassName = (req, res) => {
     watson.askClassName(req.query.text, req.query.now, (value) => {
         res.send(value);
     });
 };
 
-/** Q&A 画面を表示する。 */
+/**
+ * Q&A 画面を表示する。
+ * @param req {*} リクエスト
+ * @param res {*} レスポンス
+ */
 exports.index = (req, res) => {
     watson.getAppSettings((value) => {
         res.render('index', {title: value.name});

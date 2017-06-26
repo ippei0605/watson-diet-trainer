@@ -20,6 +20,6 @@
     "watson-developer-cloud": "~2.32.1"
   },
   "devDependencies": {
-    "jsdoc": "^3.4.3"
+    "jsdoc": "~3.4.3"
   }
 }

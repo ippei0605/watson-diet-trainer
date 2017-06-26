@@ -23,9 +23,15 @@ const messages = {
 
 /** 録音ボタンタグ */
 const recordIconTag = {
-    true: '<span class="glyphicon glyphicon-record" aria-hidden="true"></span>',
-    false: '<span class="glyphicon glyphicon-stop" aria-hidden="true"></span>'
+    false: '<span class="glyphicon glyphicon-record" aria-hidden="true"></span>',
+    true: '<span class="glyphicon glyphicon-stop" aria-hidden="true"></span>'
 };
+
+/** 現在時刻を返す。 */
+function getNow() {
+    const now = new Date();
+    return now.getFullYear() + '年' + (now.getMonth() + 1) + '月' + now.getDate() + '日 ' + now.getHours() + '時' + now.getMinutes() + '分' + now.getSeconds() + '秒';
+}
 
 /** テンプレートタグにパラメータを付与する。 */
 function formatTag(tag, s) {
@@ -53,22 +59,13 @@ function getMessageJson(key) {
 
 /** DOM 読込み完了時の処理 */
 $(function () {
-    // テキスト読み上げオブジェクトを設定する。(非対応ブラウザを考慮)
-    const speechSynthesis = window.speechSynthesis || null;
-
-    // 音声認識オブジェクトを設定する。(非対応ブラウザを考慮)
-    let recognition = null;
-
     // マイク入力のためのオブジェクトを設定する。チェックのみに使用。(非対応ブラウザを考慮)
     const getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || null;
 
     // ID セレクターを取得する。
     const conversationFieldId = $('#conversationFieldId');
-    const searchFormId = $('#searchFormId');
     const qId = $('#qId');
-    const recordId = $('#recordId');
     const sttId = $('#sttId');
-
 
     // Watson Speech API コンテキスト
     let watsonSpeechContext = {};
@@ -76,33 +73,16 @@ $(function () {
     // 音声認識中フラグ
     let recording = false;
 
-    /** Watson Text to Speech でテキストを読み上げる。 */
-    function speechWatson(text) {
-        let param = {
-            "token": watsonSpeechContext.tts.token,
-            "text": text,
-            "voice": watsonSpeechContext.tts.voice
-        };
-        WatsonSpeech.TextToSpeech.synthesize(param);
-    }
-
-    /** Speech Synthesis API でテキストを読み上げる。 */
-    function speech(text) {
-        if (speechSynthesis) {
-            speechSynthesis.cancel();
-            let msg = new SpeechSynthesisUtterance(text);
-            msg.lang = 'ja-JP';
-            speechSynthesis.speak(msg);
-        }
-    }
+    // マイクのストリーム
+    let stream = null;
 
     /** テキストを読み上げる。 */
     function textToSpeech(text) {
-        if (watsonSpeechContext.use) {
-            speechWatson(text);
-        } else {
-            speech(text);
-        }
+        WatsonSpeech.TextToSpeech.synthesize({
+            "token": watsonSpeechContext.tts.token,
+            "text": text,
+            "voice": watsonSpeechContext.tts.voice
+        });
     }
 
     /** 回答を表示する。 */
@@ -120,7 +100,7 @@ $(function () {
         window.scrollTo(0, document.body.scrollHeight);
     }
 
-    /** 質問する。 */
+    /** Waston に質問する。 */
     function ask(url, text) {
         answerNumber++;
 
@@ -144,7 +124,7 @@ $(function () {
         });
     }
 
-    /** ブラウザが非対応な機能を表示する */
+    /** ブラウザが非対応な機能を表示する。 */
     function caniuse(object, name) {
         console.log(name + ': ', object);
         if (!object) {
@@ -152,56 +132,11 @@ $(function () {
         }
     }
 
-    /** 開始ボタンクリック時 (Speech Recognition API, Speech Synthsis API) */
-    $('#startBtnId').on('click', function () {
+    /** 初期処理を実行する。 */
+    function init() {
         if (answerNumber === 0) {
-            // 音声認識オブジェクトを設定する。
-            try {
-                recognition = new webkitSpeechRecognition();
-                recognition.lang = 'ja';
-                // 録音終了時トリガーを設定する。
-                recognition.addEventListener('result', function (event) {
-                    recordId.html(recordIconTag[recording]);
-                    qId.val(event.results.item(0).item(0).transcript);
-                    qId.focus();
-                    recording = false;
-                }, false);
-            } catch (e) {
-                recordId.hide();
-                console.log('error:', e);
-            }
-
-            // ブラウザが非対応な機能を表示する。
-            caniuse(recognition, 'Speech Recognition API');
-            caniuse(speechSynthesis, 'Speech Synthesis API')
-
-            // TODO iOS ブラウザでテキスト読上げさせるための御呪い。(もっと良い方法はないか？)
-            speech('。');
-
-            // ボタンメニューを削除する。
-            $('#menuId').remove();
-
-            // フォームを表示する。
+            // 音声認識ボタンを隠す。
             sttId.hide();
-            searchFormId.show();
-
-            // 初回挨拶する。
-            ask('ask-classname', 'general_hello');
-        }
-    });
-
-    /** 開始ボタンクリック時 (Watson Speech to Text, Text to Speech) */
-    $('#startBtnWatsonId').on('click', function () {
-        if (answerNumber === 0) {
-            // ボタンメニューを削除する。
-            $('#menuId').remove();
-
-            // フォームを表示する。
-            if (!getUserMedia) {
-                sttId.hide();
-            }
-            recordId.hide();
-            searchFormId.show();
 
             // ブラウザが非対応な機能を表示する。
             caniuse(getUserMedia, 'getUserMedia API');
@@ -219,14 +154,15 @@ $(function () {
                 console.log("error: ", value);
                 viewAnswer(getMessageJson('error_watson_auth'));
             }).always(function (value) {
+                // getUserMedia があれば音声認識ボタンを表示する。
+                if (getUserMedia) {
+                    sttId.show();
+                }
             });
         }
-    });
+    }
 
-    // マイクのストリーム
-    let stream = null;
-
-    /** 録音ボタンクリック (Watson Speech to Text) */
+    /** 音声認識ボタンクリック */
     sttId.on('click', function () {
         if (recording) {
             if (stream) {
@@ -248,32 +184,21 @@ $(function () {
                 console.log(err);
             });
         }
+        recording = !recording;
         sttId.html(recordIconTag[recording]);
-        recording = !recording;
-    });
-
-    /** 録音ボタンクリック (Speech Recognition API) */
-    recordId.on('click', function () {
-        if (recording) {
-            recognition.stop();
-        } else {
-            recognition.start();
-        }
-        recordId.html(recordIconTag[recording]);
-        recording = !recording;
     });
 
     /** フォームサブミット時 */
-    searchFormId.on('submit', function () {
+    $('#searchFormId').on('submit', function () {
         const q = qId.val();
         if (q.replace(/\s/g, '') !== '') {
-            // Watson Speech to Text により音声認識を停止する。
-            if (watsonSpeechContext.use) {
+            // 音声認識を停止する。
+            if (recording) {
                 if (stream) {
                     stream.stop();
                 }
-                sttId.html(recordIconTag[recording]);
                 recording = false;
+                sttId.html(recordIconTag[recording]);
             }
 
             // 入力項目をクリアする。
@@ -292,6 +217,5 @@ $(function () {
         return false;
     });
 
-    // フォームを隠す。
-    searchFormId.hide();
+    init();
 });

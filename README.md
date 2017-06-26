@@ -26,8 +26,6 @@
 ## 使い方  
 * Chatbot は次のURLにアクセスしてください。
   - https://watson-diet-trainer.au-syd.mybluemix.net/
-* 管理機能は次のURLにアクセスしてください。
-  - https://watson-diet-trainer.au-syd.mybluemix.net/maintenance.html
 
 ## セットアップ
 1. 本サイトから watson-diet-trainer アプリをダウンロード (Download ZIP) して解凍してください。ディレクトリ名は watson-diet-trainer-master から watson-diet-trainer に変更してください。
