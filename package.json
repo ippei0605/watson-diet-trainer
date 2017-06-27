@@ -1,9 +1,10 @@
 {
   "name": "watson-diet-trainer",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "Watson Diet Trainer",
   "private": true,
   "scripts": {
+    "build": "gulp; node node_modules/babili/bin/babili public/dist/bundle.min.js -o public/bundle.min.js",
     "start": "node app.js",
     "postinstall": "node ./install/postinstall.js"
   },
@@ -20,6 +21,11 @@
     "watson-developer-cloud": "~2.32.1"
   },
   "devDependencies": {
+    "babili": "~0.1.4",
+    "del": "~3.0.0",
+    "gulp": "~3.9.1",
+    "gulp-clean-css": "~3.4.2",
+    "gulp-concat": "~2.6.1",
     "jsdoc": "~3.4.3"
   }
 }

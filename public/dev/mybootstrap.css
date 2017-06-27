@@ -15,26 +15,19 @@ header {
     color: #FFF;
 }
 
-header h4 {
-    color: #FFF;
-}
-
 #loading-view {
-    /* 領域の位置やサイズに関する設定 */
     width: 100%;
     height: 100%;
     z-index: 9999;
     position: fixed;
     top: 0;
     left: 0;
-    /* 背景関連の設定 */
-    /* background-color: #ffffff;*/
     filter: alpha(opacity=85);
     -moz-opacity: 0.85;
     -khtml-opacity: 0.85;
     opacity: 0.85;
-    background-image: url(watson_black_animate.gif);
-    background-position: center 50px;
+    background-image: url(../watson_black_animate.gif);
+    background-position: center 80px;
     background-repeat: no-repeat;
     background-attachment: fixed;
 }

@@ -8,12 +8,12 @@
 'use strict';
 
 // モジュールを読込む。
-const watson = require('../models/watson');
+const watson = require('../models/qa');
 
 /**
  * Watson Speech to Text と Text to Speech のトークンを取得して、JSON を返す。
- * @param req {*} リクエスト
- * @param res {*} レスポンス
+ * @param req {object} リクエスト
+ * @param res {object} レスポンス
  */
 exports.getWatsonSpeechContext = (req, res) => {
     watson.getSttToken(() => {
@@ -36,8 +36,8 @@ exports.getWatsonSpeechContext = (req, res) => {
 
 /**
  * Watson に尋ねる。
- * @param req {*} リクエスト
- * @param res {*} レスポンス
+ * @param req {object} リクエスト
+ * @param res {object} レスポンス
  */
 exports.ask = (req, res) => {
     watson.ask(req.query.text, req.query.now, (value) => {
@@ -47,8 +47,8 @@ exports.ask = (req, res) => {
 
 /**
  * クラス名を問合せる。
- * @param req {*} リクエスト
- * @param res {*} レスポンス
+ * @param req {object} リクエスト
+ * @param res {object} レスポンス
  */
 exports.askClassName = (req, res) => {
     watson.askClassName(req.query.text, req.query.now, (value) => {
@@ -58,8 +58,8 @@ exports.askClassName = (req, res) => {
 
 /**
  * Q&A 画面を表示する。
- * @param req {*} リクエスト
- * @param res {*} レスポンス
+ * @param req {object} リクエスト
+ * @param res {object} レスポンス
  */
 exports.index = (req, res) => {
     watson.getAppSettings((value) => {

@@ -19,4 +19,6 @@ out/
 .DS_Store
 Thumbs.db
 doc/
+public/dev/
+public/dist/
 upload/

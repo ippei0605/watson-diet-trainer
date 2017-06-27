@@ -1,5 +1,15 @@
 /**
  * @file Watson Diet Trainer: アプリ
+ *
+ * <pre>
+ * 起動方法:
+ * ・package.json の scripts.start で実行するように設定する。 (node app.js)
+ *
+ * 処理記述:
+ * ・アプリを作成して、リクエストを受付ける。
+ * ・ルートは routes/index.js に示す。
+ * </pre>
+ *
  * @author Ippei SUZUKI
  */
 

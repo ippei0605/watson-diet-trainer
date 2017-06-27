@@ -31,6 +31,11 @@ const CUSTOMIZATION_ID = process.env.CUSTOMIZATION_ID || null;
 // 環境変数を取得する。
 const appEnv = cfenv.getAppEnv();
 
+// デフォルトのアプリケーション設定
+const DEFAULT_APP_SETTINGS = {
+    "name": "Q&A Chatbot"
+};
+
 // サービスを取得する。
 const getService = (serviceName) => {
     // サービス接続情報を取得する。
@@ -54,26 +59,13 @@ const getService = (serviceName) => {
     }
 };
 
-// コンテキストをセットする。
-const context = {
-    "appEnv": appEnv,
-    "DB_NAME": DB_NAME,
-    "CLASSIFIER_ID": CLASSIFIER_ID,
-    "CUSTOMIZATION_ID": CUSTOMIZATION_ID,
-    "STT_MODEL": STT_MODEL,
-    "TTS_VOICE": TTS_VOICE,
-    "cloudant": getService('cloudantNoSQLDB'),
-    "nlc": getService('natural_language_classifier'),
-    "sttAuth": getService('speech_to_text'),
-    "ttsAuth": getService('text_to_speech')
-};
-
 /**
  * コンテキスト
  * @property {object} appEnv 環境変数
- * @property {string} DB_NAME データベース名
  * @property {string} CLASSIFIER_ID Watson Natural Language Classifier ID
  * @property {string} CUSTOMIZATION_ID Watson Speech to Text カスタムモデル ID
+ * @property {string} DB_NAME データベース名
+ * @property {object} DEFAULT_APP_SETTINGS デフォルトのアプリケーション設定
  * @property {string} STT_MODEL Watson Speech to Text
  * @property {string} TTS_VOICE Watson Speech to Text 声の名前
  * @property {object} cloudant Cloudant NoSQL DB
@@ -83,4 +75,16 @@ const context = {
  *
  * @type {{appEnv, DB_NAME: string, CLASSIFIER_ID: string, CUSTOMIZATION_ID: string, STT_MODEL: string, TTS_VOICE: string, cloudant, nlc, sttAuth, ttsAuth}}
  */
-module.exports = context;
+module.exports = {
+    "appEnv": appEnv,
+    "CLASSIFIER_ID": CLASSIFIER_ID,
+    "CUSTOMIZATION_ID": CUSTOMIZATION_ID,
+    "DB_NAME": DB_NAME,
+    "DEFAULT_APP_SETTINGS": DEFAULT_APP_SETTINGS,
+    "STT_MODEL": STT_MODEL,
+    "TTS_VOICE": TTS_VOICE,
+    "cloudant": getService('cloudantNoSQLDB'),
+    "nlc": getService('natural_language_classifier'),
+    "sttAuth": getService('speech_to_text'),
+    "ttsAuth": getService('text_to_speech')
+};

@@ -1,7 +1,7 @@
 /**
  * Watson Diet Trainer: モデル
  *
- * @module models/watson
+ * @module models/qa
  * @author Ippei SUZUKI
  */
 
@@ -75,9 +75,9 @@ exports.getAppSettings = (callback) => {
     db.get('app_settings', (err, doc) => {
         if (err) {
             console.log('error', err);
-            callback(err);
+            callback(context.DEFAULT_APP_SETTINGS);
         } else {
-            callback(doc)
+            callback(doc);
         }
     });
 };
@@ -146,8 +146,8 @@ exports.askClassName = (text, now, callback) => {
 exports.ask = (text, now, callback) => {
     if (classifier_id) {
         context.nlc.classify({
-            text: text,
-            classifier_id: context.CLASSIFIER_ID
+            "text": text,
+            "classifier_id": classifier_id
         }, (err, response) => {
             if (err) {
                 callback(gerErrorMessage(err));

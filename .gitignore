@@ -11,6 +11,9 @@ out/
 .project
 
 # その他
+public/bundle.min.js
+public/bundle.min.css
 .setenv
 .command-memo
+dist/
 upload/

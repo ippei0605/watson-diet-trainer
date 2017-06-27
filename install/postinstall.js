@@ -1,7 +1,11 @@
 /**
- * @file Watson Diet Trainer: インストール後処理 (package.json の scripts.postinstall で実行するように設定)
+ * @file Watson Diet Trainer: インストール後処理
  *
  * <pre>
+ * 起動方法:
+ * ・package.json の scripts.postinstall で実行するように設定する。 (node ./install/postinstall.js)
+ *
+ * 処理記述:
  * 1. データベース「answer」が無い場合、次の処理を実行する。
  *   1-1 データベースを作成する。
  *   1-2 設計文書を登録する。
@@ -16,6 +20,7 @@
 'use strict';
 
 // モジュールを読込む。
+const fs = require('fs');
 const context = require('../utils/context');
 
 // コンテンツデータ
@@ -39,7 +44,7 @@ const DESIGN_DOCUMENT = {
 
 // ファイルを読込む。
 const readFile = (fileName) => {
-    return context.fs.readFileSync(__dirname + '/' + fileName).toString();
+    return fs.readFileSync(__dirname + '/' + fileName).toString();
 };
 
 // 設計文書を登録する。
@@ -93,7 +98,7 @@ const createClassifier = () => {
     const params = {
         "language": "ja",
         "name": "diet-classifier",
-        "training_data": context.fs.createReadStream(__dirname + '/' + TRAINING_FILENAME)
+        "training_data": fs.createReadStream(__dirname + '/' + TRAINING_FILENAME)
     };
     context.nlc.create(params, (err, response) => {
         if (err) {

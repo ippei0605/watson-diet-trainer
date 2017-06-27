@@ -1,7 +1,7 @@
 # Watson Diet Trainer
 
 ## 更新履歴
-### version 2.0.1
+### version 3.0.0
 * watson-speech.min.js v ???
 * STT
 
@@ -89,7 +89,7 @@
     │      postinstall.js     インストール後処理 (データベース、設計文書、コンテンツ作成)
     │
     ├─models
-    │      watson.js          モデル
+    │      qa.js          モデル
     │
     ├─public
     │      chatbot.css
