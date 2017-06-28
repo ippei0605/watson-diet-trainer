@@ -5,8 +5,7 @@
   "private": true,
   "scripts": {
     "build": "gulp; node node_modules/babili/bin/babili public/dist/bundle.min.js -o public/bundle.min.js",
-    "start": "node app.js",
-    "postinstall": "node ./install/postinstall.js"
+    "start": "node app.js"
   },
   "dependencies": {
     "body-parser": "~1.17.2",
@@ -26,6 +25,7 @@
     "gulp": "~3.9.1",
     "gulp-clean-css": "~3.4.2",
     "gulp-concat": "~2.6.1",
-    "jsdoc": "~3.4.3"
+    "jsdoc": "~3.4.3",
+    "pump": "^1.0.2"
   }
 }
