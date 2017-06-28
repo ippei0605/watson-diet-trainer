@@ -80,23 +80,30 @@
     │  .cfignore
     │  .gitignore
     │  app.js                 アプリ
+    |  gulpfile.js            開発用タスク
     │  package.json
     │  readme.md
     │
     ├─install
     │      answer.json        コンテンツ (データ)
+    │      classifier.csv     トレーニングデータ 
     │      list.function      Cloudant のマップファンクション
     │      postinstall.js     インストール後処理 (データベース、設計文書、コンテンツ作成)
     │
     ├─models
-    │      qa.js          モデル
+    │      qa.js              モデル
     │
     ├─public
-    │      chatbot.css
-    │      favicon.ico
-    │      index.js                 クライアント JavaScript
-    │      mybootstrap.css
-    │      watson_black_animate.gif
+    │  │   bundle.min.css            結合・最小化した CSS
+    │  │   bundle.min.js             結合・最小化したクライアント JavaScript
+    │  │   favicon.ico
+    │  │   watson_black_animate.gif
+    │  │
+    │  └─dev
+    │          chatbot.css           開発用 CSS
+    │          index.js              開発用クライアント JavaScript
+    │          mybootstrap.css       開発用 CSS
+    │          watson-speech.min.js  外部ライブラリ
     │      
     ├─routes
     │      index.js           ルーティング

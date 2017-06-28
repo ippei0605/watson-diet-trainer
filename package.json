@@ -4,7 +4,8 @@
   "description": "Watson Diet Trainer",
   "private": true,
   "scripts": {
-    "build": "gulp; node node_modules/babili/bin/babili public/dist/bundle.min.js -o public/bundle.min.js",
+    "build": "gulp; babili public/dist/bundle.min.js -o public/bundle.min.js",
+    "postinstall": "node install/postinstall.js",
     "start": "node app.js"
   },
   "dependencies": {
@@ -25,7 +26,6 @@
     "gulp": "~3.9.1",
     "gulp-clean-css": "~3.4.2",
     "gulp-concat": "~2.6.1",
-    "jsdoc": "~3.4.3",
-    "pump": "^1.0.2"
+    "jsdoc": "~3.4.3"
   }
 }
