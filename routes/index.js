@@ -30,7 +30,7 @@ exports.getWatsonSpeechContext = (req, res) => {
                 "stt": sttValue,
                 "tts": ttsValue
             });
-        })
+        });
     });
 };
 

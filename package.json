@@ -3,8 +3,11 @@
   "version": "3.0.0",
   "description": "Watson Diet Trainer",
   "private": true,
+  "engines": {
+    "node": "~6.9.4"
+  },
   "scripts": {
-    "build": "gulp; babili public/dist/bundle.min.js -o public/bundle.min.js",
+    "build": "gulp; babili public/dist/bundle.js -o public/bundle.min.js",
     "postinstall": "node install/postinstall.js",
     "start": "node app.js"
   },

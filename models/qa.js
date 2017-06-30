@@ -19,11 +19,11 @@ const db = context.cloudant.db.use(context.DB_NAME);
 // エラーオブジェクトからメッセージを取得する。
 const gerErrorMessage = (err) => {
     console.log('error:', err);
-    return ({
+    return {
         "class_name": "",
         "message": "エラーが発生しました。 " + err.error + " (code=" + err.code + ")",
         "confidence": 0
-    });
+    };
 };
 
 // こんにちはを変換する。
@@ -36,7 +36,7 @@ const finalAnswer = (value, now) => {
     switch (value.class_name) {
         case 'general_hello':
             let regexp = /(\d+)年(\d+)月(\d+)日 (\d+)時(\d+)分(\d+)秒/;
-            let hour = parseInt(regexp.exec(now)[4]);
+            let hour = parseInt(regexp.exec(now)[4], 10);
             if (hour >= 17) {
                 value.message = replaceHello(value.message, 'こんばんは');
             } else if (hour < 11 && hour >= 5) {

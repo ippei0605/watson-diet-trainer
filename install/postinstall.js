@@ -102,7 +102,7 @@ const createClassifier = () => {
         if (err) {
             console.log(err);
         } else {
-            console.log('NLC の Classifier を作成します。');
+            console.log('NLC の Classifier を作成しました。(学習中)');
             console.log(response);
         }
     });

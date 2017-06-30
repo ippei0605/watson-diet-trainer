@@ -8,10 +8,11 @@
 'use strict';
 
 // モジュールを読込む。
-const cfenv = require('cfenv');
-const cloudant = require('cloudant');
-const vcapServices = require('vcap_services');
-const watson = require('watson-developer-cloud');
+const
+    cfenv = require('cfenv'),
+    cloudant = require('cloudant'),
+    vcapServices = require('vcap_services'),
+    watson = require('watson-developer-cloud');
 
 // データベース名を設定する。
 const DB_NAME = 'answer';
