@@ -49,11 +49,11 @@ const readFile = (fileName) => {
 const insertDesignDocument = (db, doc) => {
     doc.views.list.map = readFile(MAP_LIST_FILENAME);
     db.insert(doc, (err) => {
-        if (!err) {
+        if (err) {
+            console.log(err);
+        } else {
             console.log('設計文書[%s]を登録しました。', doc._id);
             console.log(JSON.stringify(doc, undefined, 2));
-        } else {
-            console.log(err);
         }
     });
 };
@@ -62,11 +62,11 @@ const insertDesignDocument = (db, doc) => {
 const insertDocuments = (db) => {
     let data = JSON.parse(readFile(CONTENT_FILENAME));
     db.bulk(data, (err) => {
-        if (!err) {
+        if (err) {
+            console.log(err);
+        } else {
             console.log('文書を登録しました。');
             console.log(JSON.stringify(data, undefined, 2));
-        } else {
-            console.log(err);
         }
     });
 };

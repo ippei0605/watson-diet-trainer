@@ -13,8 +13,6 @@
  * </pre>
  *
  * @author Ippei SUZUKI
- *
- *
  */
 
 'use strict';
